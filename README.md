@@ -1,3 +1,3 @@
-# wm_kinova_hardware_interface
+# wm_admitance
 
 Package pour l'algorithme d'admitance.
