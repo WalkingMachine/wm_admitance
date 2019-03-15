@@ -24,7 +24,7 @@ namespace wm_admitance
     class WMGravityModule final
     {
     public:
-        WMGravityModule(const std::vector<std::string>& pTFNames, const std::string& pURDFFilePath);
+        WMGravityModule(const std::vector<std::string>& pTFNames, const std::string& pURDFFilePath, size_t pActuatorCount);
         ~WMGravityModule() noexcept = default;
 
         CompensatedTorqueVector process();
@@ -32,6 +32,7 @@ namespace wm_admitance
     private:
 
         std::vector<tf::StampedTransform> retrievePositionFromTF();
+        void retriveRobotConfiguration();
 
         // Plusieurs IMU, voir si c'est possible d'avoir une liste?
         //void imuCallback(const sensor_msgs::Imu::ConstPtr& pIMUMessage); //  On subscribe à cette fonction pour le imu
@@ -40,9 +41,12 @@ namespace wm_admitance
         const tf::TransformListener aListener;
         //ros::Subscriber aIMUSubHandle;
         urdf::Model aURDFModel;
+        size_t aActuatorCount;
 
         const std::vector<std::string> aTFNames;
         const std::string aURDFFilePath;
+
+        std::vector<double> aLinkMass;
     };
 } // namespace wm_admitance
 #endif // WM_GRAVITY_MODULE_H
