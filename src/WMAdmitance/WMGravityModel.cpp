@@ -35,11 +35,32 @@ CompensatedTorqueVector WMGravityModule::process()
 
 }
 
-// Pas certain de ce qu'on devrait retourner, geometry_msgs::PointStamped peut être?
-std::vector<tf::StampedTransform>  WMGravityModule::retrievePositionFromTF()
+std::vector<tf::Quaternion>  WMGravityModule::retrievePositionFromTF()
 {
+   const auto& lList = retrievePositionFromTF()
+
     // On utilise aTFNames pour trouver les TFs des joints
-    // Récupère la position du TF du joint passé en paramètre
+    std::vector<std::string> lTFNameList;
+
+
+    std::vector<tf::Quaternion> lQuaternionList;
+    for (const std::string& lTFName : lTFNameList)
+    {
+        try
+        {
+            tf::StampedTransform lTransform;
+            aListener.lookupTransform("/base_link", lTFName,
+                                 ros::Time(0), lTransform);
+
+            lQuaternionList.emplace_back(std::move(lTransform.getRotation()));
+        }
+        catch (const tf::TransformException& ex)
+        {
+            ROS_ERROR("%s",ex.what());
+            ros::Duration(1.0).sleep();
+        }
+    }
+    return lQuaternionList;
 }
 
 //void WMGravityModule::imuCallback(const sensor_msgs::Imu::ConstPtr& pIMUMessage)
