@@ -1,8 +1,9 @@
-// \file WMGravityModule.cpp
+// \file WMGravityModel.cpp
 // \brief Definition of gravity module.
 // Created by kevin on 07/03/2019.
 
-#include "WMGravityModule.h"
+#include "WMGravityModel.h"
+
 #include <ros/ros.h>
 #include <stdexcept>
 #include <tf/transform_listener.h>

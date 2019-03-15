@@ -8,7 +8,6 @@ add_definitions(-std=c++11)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
     urdf
-    sensor_msgs
     roscpp
 )
 
@@ -20,7 +19,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
     INCLUDE_DIRS include
     LIBRARIES ${PROJECT_NAME}
-    CATKIN_DEPENDS  roscpp sensor_msgs urdf
+    CATKIN_DEPENDS  roscpp urdf
 )
 
 
@@ -29,7 +28,8 @@ catkin_package(
 ###########
 
 include_directories(
-  include
+  include/WMAdmitance
+  include/WMUtilities
   ${catkin_INCLUDE_DIRS}
  # ${Eigen_INCLUDE_DIRS}
 )
@@ -37,7 +37,8 @@ include_directories(
 
 
 add_library(${PROJECT_NAME}
-        src/WMGravityModule.cpp
+        src/WMAdmitance/WMGravityModel.cpp
+        src/WMUtilities/DiscreteTransferFunction.cpp
         )
 
 add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
