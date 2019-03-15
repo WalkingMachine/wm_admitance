@@ -9,11 +9,17 @@
 #include <vector>
 #include <ros/ros.h>
 #include <tf/transform_listener.h>
-#include <sensor_msgs/Imu.h>
+//#include <sensor_msgs/Imu.h>
 #include <urdf/model.h>
 
 namespace wm_admitance
 {
+    /**
+     * \brief Type of vector of compensated torque
+     */
+    using CompensatedTorqueVector = std::vector<double>;
+
+
     // Note: Il faudra faire une classe WMAdmitance qui utiliser WMGravityModule.
     class WMGravityModule final
     {
@@ -21,18 +27,18 @@ namespace wm_admitance
         WMGravityModule(const std::vector<std::string>& pTFNames, const std::string& pURDFFilePath);
         ~WMGravityModule() noexcept = default;
 
-        // void calculateTorqueFromGravity(std::vector) ou Velocity?
+        CompensatedTorqueVector process();
 
     private:
 
-        void retrievePositionFromTF();
+        std::vector<tf::StampedTransform> retrievePositionFromTF();
 
         // Plusieurs IMU, voir si c'est possible d'avoir une liste?
-        void imuCallback(const sensor_msgs::Imu::ConstPtr& pIMUMessage); //  On subscribe à cette fonction pour le imu
+        //void imuCallback(const sensor_msgs::Imu::ConstPtr& pIMUMessage); //  On subscribe à cette fonction pour le imu
 
         ros::NodeHandle aGravityNode;
         const tf::TransformListener aListener;
-        ros::Subscriber aIMUSubHandle;
+        //ros::Subscriber aIMUSubHandle;
         urdf::Model aURDFModel;
 
         const std::vector<std::string> aTFNames;
