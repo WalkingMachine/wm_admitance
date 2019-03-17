@@ -15,24 +15,20 @@ namespace
     const std::string gBaseTFName = ""; // ajouter le nom du TF de la base
 }
 
-WMGravityModel::WMGravityModel(const std::vector<std::string>& pTFNames, const std::string& pURDFFilePath) :
-    aTFNames(pTFNames),
-    aURDFFilePath(pURDFFilePath)
+WMGravityModel::WMGravityModel(const std::vector<std::string>& pTFNames) :
+    aTFNames(pTFNames)
 {
     // Initialisation du URDF parser
-    if (!aURDFModel.initFile(aURDFFilePath))
+    if (!aURDFModel.initParam("/robot_description"))
     {
-         ROS_ERROR("Failed to parse urdf file '%s'", pURDFFilePath.c_str());
-         //throw std::runtime_error("Failed to parse urdf file " + pURDFFilePath);
+         ROS_ERROR("Failed to parse URDF parameter server '/robot_description'");
+         throw std::runtime_error("Failed to parse URDF parameter server '/robot_description'");
     }
 }
 
 CompensatedTorqueVector WMGravityModel::process()
 {
     CompensatedTorqueVector lCompensatedTorque = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
-
-
-    //ROS_INFO("%lf", lCompensatedTorque[0]);
 
     return lCompensatedTorque;
 }

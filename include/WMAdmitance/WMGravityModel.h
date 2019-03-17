@@ -22,7 +22,7 @@ namespace wm_admitance
     class WMGravityModel final
     {
     public:
-        WMGravityModel(const std::vector<std::string>& pTFNames, const std::string& pURDFFilePath);
+        WMGravityModel(const std::vector<std::string>& pTFNames);
         ~WMGravityModel() noexcept = default;
 
         CompensatedTorqueVector process();
