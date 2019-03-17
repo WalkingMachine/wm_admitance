@@ -56,12 +56,12 @@ WMAdmitance* WMAdmitance::getInstance()
     WMAdmitance* lInstance = aInstance.load(std::memory_order_acquire);
     if (!lInstance)
     {
-        std::lock_guard<std::mutex> myLock(aMutex);
+        std::lock_guard<std::mutex> lLock(aMutex);
         lInstance = aInstance.load(std::memory_order_relaxed);
         if(!lInstance)
         {
             lInstance = new WMAdmitance();
-            aInstance.store(lInstance,std::memory_order_release);
+            aInstance.store(lInstance, std::memory_order_release);
         }
     }   
     return lInstance;
