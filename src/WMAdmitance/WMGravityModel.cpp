@@ -7,7 +7,8 @@
 #include <ros/ros.h>
 #include <stdexcept>
 #include <tf/transform_listener.h>
-#include <WMGravityModule.h>
+#include <WMGravityModel.h>
+#include "URDFHelper.h"
 
 
 using namespace wm_admitance;
@@ -22,24 +23,47 @@ WMGravityModule::WMGravityModule(const std::vector<std::string>& pTFNames, const
     aActuatorCount{pActuatorCount},
     aURDFFilePath(pURDFFilePath)
 {
-    // Initialisation du URDF parser
-    if (!aURDFModel.initFile(aURDFFilePath))
-    {
-         ROS_ERROR("Failed to parse urdf file '%s'", pURDFFilePath.c_str());
-         throw std::runtime_error("Failed to parse urdf file " + pURDFFilePath);
-    }
+    aJointTransform.resize(aActuatorCount);
+    aRotationMatrix.resize(aActuatorCount + 1);
+    aTranslationVector.resize(aActuatorCount + 1);
+    aAccelerationVector.resize(aActuatorCount + 1);
+    aForce.resize(aActuatorCount);
+    aBackwardForce.resize(aActuatorCount + 1);
+    aBackwardTorque.resize(aActuatorCount + 1);
+    aCompensatedTorque.resize(aActuatorCount);
 
-    aLinkMass.resize(pActuatorCount);
+    // Get only needed information from URDF file
+    utilities::URDFHelper lURDFParser;
+    aRobotData = lURDFParser.getRobotData(aURDFFilePath, aActuatorCount);
+
     // Peut-etre une liste de subscribe ici
     //aIMUSubHandle = aGravityNode.subscribe("imu", 1000, &WMGravityModule::imuCallback, this);
 }
 
 CompensatedTorqueVector WMGravityModule::process()
 {
-    tf::StampedTransform s;
-    s.getRotation().
+    aJointTransform = retrievePositionFromTF();
+    retrieveTransformInformation();
 
+    aAccelerationVector[0].setValue(0.0, 0.0, -9.81); // adding gravity
 
+    aBackwardForce[aActuatorCount + 1].setZero();
+    aBackwardTorque[aActuatorCount + 1].setZero();
+
+    for (size_t i{0}; i < aActuatorCount; ++i)
+    {
+        aAccelerationVector[i + 1] = aRotationMatrix[i].transpose() * aAccelerationVector[i];
+        aForce[i] = aRobotData.aLinkMass[i] * aAccelerationVector[i + 1];
+    }
+
+    for (size_t i{aActuatorCount}; i > 0; --i)
+    {
+        aBackwardForce[i - 1]  = aRotationMatrix[i] * aBackwardForce[i] + aForce[i - 1];
+        aBackwardTorque[i - 1] = aRotationMatrix[i] * aBackwardTorque[i] + aRobotData.aCenterOfMass[i - 1].cross(aForce[i - 1]) + aTranslationVector[i].cross(aRotationMatrix[i] * aBackwardForce[i]);
+        aCompensatedTorque[i] = aBackwardTorque[i -1].z();
+    }
+
+    return aCompensatedTorque;
 }
 
 // Pas certain de ce qu'on devrait retourner, geometry_msgs::PointStamped peut être?
@@ -49,33 +73,18 @@ std::vector<tf::StampedTransform>  WMGravityModule::retrievePositionFromTF()
     // Récupère la position du TF du joint passé en paramètre
 }
 
-void WMGravityModule::retriveRobotConfiguration()
+void WMGravityModule::retrieveTransformInformation()
 {
-    urdf::LinkConstSharedPtr lLink;
+    size_t lActuatorCount{0};
+    for (tf::StampedTransform & lTransform : aJointTransform)
+    {
+        aRotationMatrix[lActuatorCount] = lTransform.getBasis();
+        aTranslationVector[lActuatorCount] = lTransform.getOrigin();
+        ++lActuatorCount;
+    }
+    aRotationMatrix[lActuatorCount + 1].setIdentity();
+    aTranslationVector[lActuatorCount + 1].setZero();
 
-    lLink = aURDFModel.links_.at("right_clavicular_link");
-    aLinkMass[0] = lLink->inertial->mass;
-
-    lLink = aURDFModel.links_.at("right_upper_arm_upper_link");
-    aLinkMass[1] = lLink->inertial->mass;
-
-    lLink = aURDFModel.links_.at("right_upper_arm_lower_link");
-    aLinkMass[2] = lLink->inertial->mass;
-
-    lLink = aURDFModel.links_.at("right_elbow_pitch_joint");
-    aLinkMass[3] = lLink->inertial->mass;
-
-    lLink = aURDFModel.links_.at("right_forearm_lower_link");
-    aLinkMass[4] = lLink->inertial->mass;
-
-    lLink = aURDFModel.links_.at("right_wrist_upper_link");
-    aLinkMass[5] = lLink->inertial->mass;
-
-    lLink = aURDFModel.links_.at("right_wrist_lower_link");
-    aLinkMass[6] = lLink->inertial->mass;
-
-    lLink = aURDFModel.links_.at("right_socket_link");
-    aLinkMass[7] = lLink->inertial->mass;
 }
 
 //void WMGravityModule::imuCallback(const sensor_msgs::Imu::ConstPtr& pIMUMessage)

@@ -5,6 +5,7 @@
 #ifndef WM_GRAVITY_MODULE_H
 #define WM_GRAVITY_MODULE_H
 
+#include "ControlTypes.h"
 #include <string>
 #include <vector>
 #include <ros/ros.h>
@@ -19,7 +20,6 @@ namespace wm_admitance
      */
     using CompensatedTorqueVector = std::vector<double>;
 
-
     // Note: Il faudra faire une classe WMAdmitance qui utiliser WMGravityModule.
     class WMGravityModule final
     {
@@ -32,7 +32,7 @@ namespace wm_admitance
     private:
 
         std::vector<tf::StampedTransform> retrievePositionFromTF();
-        void retriveRobotConfiguration();
+        void retrieveTransformInformation();
 
         // Plusieurs IMU, voir si c'est possible d'avoir une liste?
         //void imuCallback(const sensor_msgs::Imu::ConstPtr& pIMUMessage); //  On subscribe à cette fonction pour le imu
@@ -46,7 +46,16 @@ namespace wm_admitance
         const std::vector<std::string> aTFNames;
         const std::string aURDFFilePath;
 
-        std::vector<double> aLinkMass;
+        std::vector<tf::StampedTransform> aJointTransform;
+        std::vector<tf::Matrix3x3>        aRotationMatrix;
+        std::vector<tf::Vector3>          aTranslationVector;
+        std::vector<tf::Vector3>          aAccelerationVector;
+        std::vector<tf::Vector3>          aForce;
+        std::vector<tf::Vector3>          aBackwardForce;
+        std::vector<tf::Vector3>          aBackwardTorque;
+        CompensatedTorqueVector           aCompensatedTorque;
+
+        utilities::RobotData aRobotData;
     };
 } // namespace wm_admitance
 #endif // WM_GRAVITY_MODULE_H
