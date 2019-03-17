@@ -134,7 +134,7 @@ std::vector<double> WMAdmitance::calculateAdmitanceTorque(const std::vector<doub
     {
         ROS_INFO("Real effort: %lf", getEffortFromJoint(lJointName));
         ROS_INFO("Compensated effort: %lf", pCompensatedTorque[lIndex]);
-        lAdmitanceTorque.emplace_back(getEffortFromJoint(lJointName) + pCompensatedTorque[lIndex]);
+        lAdmitanceTorque.emplace_back(getEffortFromJoint(lJointName) - pCompensatedTorque[lIndex]);
         ++lIndex;
     }
     return lAdmitanceTorque;
