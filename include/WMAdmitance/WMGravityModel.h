@@ -1,4 +1,4 @@
-// \file WMGravityModule.h
+// \file WMGravityModel.h
 // \brief Declaration of gravity module.
 // Created by kevin on 07/03/2019.
 
@@ -19,13 +19,11 @@ namespace wm_admitance
      */
     using CompensatedTorqueVector = std::vector<double>;
 
-
-    // Note: Il faudra faire une classe WMAdmitance qui utiliser WMGravityModule.
-    class WMGravityModule final
+    class WMGravityModel final
     {
     public:
-        WMGravityModule(const std::vector<std::string>& pTFNames, const std::string& pURDFFilePath);
-        ~WMGravityModule() noexcept = default;
+        WMGravityModel(const std::vector<std::string>& pTFNames, const std::string& pURDFFilePath);
+        ~WMGravityModel() noexcept = default;
 
         CompensatedTorqueVector process();
 
@@ -33,12 +31,8 @@ namespace wm_admitance
 
         std::vector<tf::StampedTransform> retrievePositionFromTF();
 
-        // Plusieurs IMU, voir si c'est possible d'avoir une liste?
-        //void imuCallback(const sensor_msgs::Imu::ConstPtr& pIMUMessage); //  On subscribe à cette fonction pour le imu
 
-        ros::NodeHandle aGravityNode;
         const tf::TransformListener aListener;
-        //ros::Subscriber aIMUSubHandle;
         urdf::Model aURDFModel;
 
         const std::vector<std::string> aTFNames;
