@@ -84,7 +84,6 @@ void WMGravityModule::retrieveTransformInformation()
     }
     aRotationMatrix[lActuatorCount + 1].setIdentity();
     aTranslationVector[lActuatorCount + 1].setZero();
-
 }
 
 //void WMGravityModule::imuCallback(const sensor_msgs::Imu::ConstPtr& pIMUMessage)

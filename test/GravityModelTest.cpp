@@ -3,16 +3,17 @@
 //
 
 #include <gtest/gtest.h>
-#include "URDFHelper.h"
+#include "WMGravityModel.h"
 #include "ControlTypes.h"
 
 using namespace wm_admitance::utilities;
+using namespace wm_admitance;
 
-class URDFParse_Unit_Test : public testing::Test
+class GravityModel_Unit_Test : public testing::Test
 {
 public:
-    URDFParse_Unit_Test() = default;
-    virtual ~URDFParse_Unit_Test() = default;
+    GravityModel_Unit_Test() = default;
+    virtual ~GravityModel_Unit_Test() = default;
 
     void SetUp() override
     {
@@ -26,13 +27,17 @@ public:
 
 
     RobotData   lRobotData;
-    wm_admitance::utilities::URDFHelper  aURDFHelper;
     std::string aURDFFilePath;
 };
 
-TEST_F(URDFParse_Unit_Test, TestUrdfParser)
+TEST_F(GravityModel_Unit_Test, TestUrdfParser)
 {
-    urdf::Model aURDFModel;
+    std::vector<std::string> s{""};
+    WMGravityModule gravityModel(s, aURDFFilePath, 7);
+
+
+
+
 
 
 
@@ -44,3 +49,5 @@ int main(int argc, char **argv)
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
+
+
