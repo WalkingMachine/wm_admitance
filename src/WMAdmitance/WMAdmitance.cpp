@@ -53,9 +53,20 @@ WMAdmitance::WMAdmitance(ros::NodeHandle& pRootNode)
     aJointStateSub = aAdmitanceNode.subscribe("joint_states", 1, &WMAdmitance::jointStateCallback, this);
 }
 
+double WMAdmitance::getAdmitanceVelocityFromJoint(const std::string& pJointName)
+{
+    double lVelocity = 0.0f;
+    const auto& lIter = aAdmitanceVelocityMap.find(pJointName);
+    if (lIter != aAdmitanceVelocityMap.end())
+    {
+        lVelocity = lIter->second;
+    }
+    return lVelocity;
+}
+
 void WMAdmitance::process()
 {
-    ROS_INFO("%lf", aGravityModel->process()[0]);
+    //ROS_INFO("%lf", aGravityModel->process()[0]);
     std::vector<double> lAdmitanceTorque =
         calculateAdmitanceTorque(aGravityModel->process());
 
@@ -80,9 +91,11 @@ void WMAdmitance::process()
     //updateAdmitanceVelocity(
     //    aDiscreteTF->updateVector(Eigen::Map<Eigen::VectorXd>(lAdmitanceTorque.data(), lAdmitanceTorque.size())));
 
+    //updateAdmitanceVelocity(lAdmitanceTorque);
+
     //for (const auto& lJointName : aJointNames)
     //{
-    //    ROS_INFO("%s: %lf", lJointName.c_str(), getEffortFromJoint(lJointName));
+    //    ROS_INFO("Effort of %s: %lf", lJointName.c_str(), getAdmitanceVelocityFromJoint(lJointName));
     //}
 }
 

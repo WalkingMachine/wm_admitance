@@ -32,7 +32,7 @@ CompensatedTorqueVector WMGravityModel::process()
     CompensatedTorqueVector lCompensatedTorque = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
 
 
-    ROS_INFO("%lf", lCompensatedTorque[0]);
+    //ROS_INFO("%lf", lCompensatedTorque[0]);
 
     return lCompensatedTorque;
 }
