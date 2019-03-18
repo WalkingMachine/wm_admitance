@@ -26,7 +26,7 @@ WMAdmitance::WMAdmitance()
 {
     aAdmitanceNode.getParam("sara_admitance/joint_names", aJointNames);
 
-    aGravityModel = std::make_unique<WMGravityModel>(aJointNames);
+    aGravityModel = std::make_unique<WMGravityModel>(aJointNames, 7);
 
     TransferFunctionCoefficient lFunctionCoeff;
     lFunctionCoeff.aNumeratorFactor = Eigen::ArrayXXd::Zero(aJointNames.size(), 2 + 1);
@@ -86,10 +86,10 @@ void WMAdmitance::process()
     updateAdmitanceVelocity(
         aDiscreteTF->updateVector(Eigen::Map<Eigen::VectorXd>(lAdmitanceTorque.data(), lAdmitanceTorque.size())));
 
-    for (const auto& lJointName : aJointNames)
-    {
-        ROS_INFO("Velocity of %s: %lf", lJointName.c_str(), getAdmitanceVelocityFromJoint(lJointName));
-    }
+    //for (const auto& lJointName : aJointNames)
+    //{
+    //    ROS_INFO("Velocity of %s: %lf", lJointName.c_str(), getAdmitanceVelocityFromJoint(lJointName));
+    //}
 }
 
 void WMAdmitance::jointStateCallback(const sensor_msgs::JointState& pMsg)
@@ -138,8 +138,8 @@ std::vector<double> WMAdmitance::calculateAdmitanceTorque(const std::vector<doub
     std::vector<double> lAdmitanceTorque;
     for (const auto& lJointName : aJointNames)
     {
-        ROS_INFO("Real effort: %lf", getEffortFromJoint(lJointName));
-        ROS_INFO("Compensated effort: %lf", pCompensatedTorque[lIndex]);
+        //ROS_INFO("Real effort: %lf", getEffortFromJoint(lJointName));
+        //ROS_INFO("Compensated effort: %lf", pCompensatedTorque[lIndex]);
         lAdmitanceTorque.emplace_back(getEffortFromJoint(lJointName) - pCompensatedTorque[lIndex]);
         ++lIndex;
     }
