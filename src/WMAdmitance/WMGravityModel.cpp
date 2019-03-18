@@ -59,12 +59,12 @@ CompensatedTorqueVector WMGravityModel::process()
         aCompensatedTorque[i - 1] = aBackwardTorque[i -1].z();
     }
 
-    //size_t lIndex = 0;
-    //for (const auto& lTFName : aTFNames)
-    //{
-    //    ROS_INFO("Compensated Torque of %s: %lf", lTFName.c_str(), aCompensatedTorque[lIndex]);
-    //    ++lIndex;
-    //}
+//    size_t lIndex = 0;
+//    for (const auto& lTFName : aTFNames)
+//    {
+//        ROS_INFO("Compensated Torque of %s: %lf", lTFName.c_str(), aCompensatedTorque[lIndex]);
+//        ++lIndex;
+//    }
 
     return aCompensatedTorque;
 }
@@ -72,6 +72,7 @@ CompensatedTorqueVector WMGravityModel::process()
 std::vector<tf::StampedTransform>  WMGravityModel::retrievePositionFromTF()
 {
     std::vector<tf::StampedTransform> lTransformList;
+    std::string lLastFrame{gBaseTFName};
     for (const std::string& lTFName : aTFNames)
     {
         try
@@ -79,11 +80,12 @@ std::vector<tf::StampedTransform>  WMGravityModel::retrievePositionFromTF()
             tf::StampedTransform lTransform;
             ros::Time lNow = ros::Time::now();
 
-            if (aListener.waitForTransform(gBaseTFName, lTFName, lNow, ros::Duration(0.01)))
+            if (aListener.waitForTransform(lLastFrame, lTFName, lNow, ros::Duration(0.01)))
             {
-                aListener.lookupTransform(gBaseTFName, lTFName, lNow, lTransform);
+                aListener.lookupTransform(lLastFrame, lTFName, lNow, lTransform);
 
                 lTransformList.emplace_back(std::move(lTransform));
+                lLastFrame = lTFName;
             }
         }
         catch (const tf::TransformException& ex)
