@@ -32,7 +32,10 @@ public:
 
 TEST_F(GravityModel_Unit_Test, TestGravityModel)
 {
+    while (true)
+    {
     CompensatedTorqueVector ss = aGravityModel->process();
+}
 }
 
 

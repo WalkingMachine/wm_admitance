@@ -15,7 +15,7 @@ using namespace wm_admitance;
 
 namespace
 {
-    const std::string gBaseTFName = ""; // ajouter le nom du TF de la base
+    const std::string gBaseTFName = "base_link"; // ajouter le nom du TF de la base
 }
 
 WMGravityModel::WMGravityModel(const std::vector<std::string>& pTFNames, size_t pActuatorCount) :
@@ -38,7 +38,7 @@ WMGravityModel::WMGravityModel(const std::vector<std::string>& pTFNames, size_t 
 
 CompensatedTorqueVector WMGravityModel::process()
 {
-    //aJointTransform = retrievePositionFromTF();
+    aJointTransform = retrievePositionFromTF();
     retrieveTransformInformation();
 
     aAccelerationVector[0].setValue(0.0, 0.0, -9.81); // adding gravity
@@ -59,22 +59,42 @@ CompensatedTorqueVector WMGravityModel::process()
         aCompensatedTorque[i - 1] = aBackwardTorque[i -1].z();
     }
 
+    //size_t lIndex = 0;
+    //for (const auto& lTFName : aTFNames)
+    //{
+    //    ROS_INFO("Compensated Torque of %s: %lf", lTFName.c_str(), aCompensatedTorque[lIndex]);
+    //    ++lIndex;
+    //}
+
     return aCompensatedTorque;
 }
 
-// Pas certain de ce qu'on devrait retourner, geometry_msgs::PointStamped peut être?
 std::vector<tf::StampedTransform>  WMGravityModel::retrievePositionFromTF()
 {
-    // On utilise aTFNames pour trouver les TFs des joints
-    // Récupère la position du TF du joint passé en paramètre
-    return std::vector<tf::StampedTransform>();
-}
+    std::vector<tf::StampedTransform> lTransformList;
+    for (const std::string& lTFName : aTFNames)
+    {
+        try
+        {
+            tf::StampedTransform lTransform;
+            ros::Time lNow = ros::Time::now();
 
-//void WMGravityModule::imuCallback(const sensor_msgs::Imu::ConstPtr& pIMUMessage)
-//{
-//    // http://wiki.ros.org/Robots/evarobot/Tutorials/indigo/IMU
-//    // On set atomiquement des attributs de classes (float_ ou l'objet orientation.
-//}
+            if (aListener.waitForTransform(gBaseTFName, lTFName, lNow, ros::Duration(0.01)))
+            {
+                aListener.lookupTransform(gBaseTFName, lTFName, lNow, lTransform);
+
+                lTransformList.emplace_back(std::move(lTransform));
+            }
+        }
+        catch (const tf::TransformException& ex)
+        {
+            ROS_ERROR("Failed to retrieve transform of '%s': %s", lTFName.c_str(), ex.what());
+            throw std::runtime_error("Failed to retrieve transform of '" + lTFName + 
+                "': " + ex.what());
+        }
+    }
+    return lTransformList;
+}
 
 void WMGravityModel::retrieveTransformInformation()
 {

@@ -10,7 +10,6 @@
 #include <vector>
 #include <ros/ros.h>
 #include <tf/transform_listener.h>
-//#include <sensor_msgs/Imu.h>
 #include <urdf/model.h>
 
 namespace wm_admitance
@@ -20,7 +19,6 @@ namespace wm_admitance
      */
     using CompensatedTorqueVector = std::vector<double>;
 
-    // Note: Il faudra faire une classe WMAdmitance qui utiliser WMGravityModule.
     class WMGravityModel final
     {
     public:
@@ -33,7 +31,6 @@ namespace wm_admitance
 
         std::vector<tf::StampedTransform> retrievePositionFromTF();
         void retrieveTransformInformation();
-
 
         const tf::TransformListener aListener;
         size_t aActuatorCount;
