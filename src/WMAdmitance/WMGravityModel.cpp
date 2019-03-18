@@ -38,7 +38,7 @@ WMGravityModel::WMGravityModel(const std::vector<std::string>& pTFNames, size_t 
 
 CompensatedTorqueVector WMGravityModel::process()
 {
-    aJointTransform = retrievePositionFromTF();
+    //aJointTransform = retrievePositionFromTF();
     retrieveTransformInformation();
 
     aAccelerationVector[0].setValue(0.0, 0.0, -9.81); // adding gravity
@@ -55,9 +55,8 @@ CompensatedTorqueVector WMGravityModel::process()
     for (size_t i{aActuatorCount}; i > 0; --i)
     {
         aBackwardForce[i - 1]  = aRotationMatrix[i] * aBackwardForce[i] + aForce[i - 1];
-        aBackwardTorque[i - 1] = aRotationMatrix[i] * aBackwardTorque[i] +
-            aRobotData.aCenterOfMass[i - 1].cross(aForce[i - 1]) + aTranslationVector[i].cross(aRotationMatrix[i] * aBackwardForce[i]);
-        aCompensatedTorque[i] = aBackwardTorque[i - 1].getZ();
+        aBackwardTorque[i - 1] = aRotationMatrix[i] * aBackwardTorque[i] + aRobotData.aCenterOfMass[i - 1].cross(aForce[i - 1]) + aTranslationVector[i].cross(aRotationMatrix[i] * aBackwardForce[i]);
+        aCompensatedTorque[i - 1] = aBackwardTorque[i -1].z();
     }
 
     //size_t lIndex = 0;
@@ -101,6 +100,6 @@ void WMGravityModel::retrieveTransformInformation()
         aTranslationVector[lActuatorCount] = lTransform.getOrigin();
         ++lActuatorCount;
     }
-    aRotationMatrix[lActuatorCount + 1].setIdentity();
-    aTranslationVector[lActuatorCount + 1].setZero();
+    aRotationMatrix[lActuatorCount].setIdentity();
+    aTranslationVector[lActuatorCount].setZero();
 }
