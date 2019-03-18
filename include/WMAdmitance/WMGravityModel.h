@@ -36,8 +36,7 @@ namespace wm_admitance
         void retrieveTransformInformation();
 
 
-        //const tf::TransformListener aListener;
-        //urdf::Model aURDFModel;
+        const tf::TransformListener aListener;
         size_t aActuatorCount;
 
         const std::vector<std::string> aTFNames;

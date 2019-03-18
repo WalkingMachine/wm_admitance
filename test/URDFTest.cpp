@@ -32,10 +32,7 @@ public:
 
 TEST_F(URDFParse_Unit_Test, TestUrdfParser)
 {
-    urdf::Model aURDFModel;
-
-
-
+    lRobotData = aURDFHelper.getRobotData(aURDFFilePath, 7);
 }
 
 
