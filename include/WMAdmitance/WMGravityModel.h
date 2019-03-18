@@ -32,7 +32,6 @@ namespace wm_admitance
         std::vector<tf::StampedTransform> retrievePositionFromTF();
         void retrieveTransformInformation();
 
-
         const tf::TransformListener aListener;
         size_t aActuatorCount;
 

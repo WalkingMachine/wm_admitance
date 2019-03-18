@@ -15,7 +15,7 @@ using namespace wm_admitance;
 
 namespace
 {
-    const std::string gBaseTFName = ""; // ajouter le nom du TF de la base
+    const std::string gBaseTFName = "base_link"; // ajouter le nom du TF de la base
 }
 
 WMGravityModel::WMGravityModel(const std::vector<std::string>& pTFNames, size_t pActuatorCount) :
@@ -38,7 +38,7 @@ WMGravityModel::WMGravityModel(const std::vector<std::string>& pTFNames, size_t 
 
 CompensatedTorqueVector WMGravityModel::process()
 {
-    //aJointTransform = retrievePositionFromTF();
+    aJointTransform = retrievePositionFromTF();
     retrieveTransformInformation();
 
     aAccelerationVector[0].setValue(0.0, 0.0, -9.81); // adding gravity
@@ -77,15 +77,20 @@ std::vector<tf::StampedTransform>  WMGravityModel::retrievePositionFromTF()
         try
         {
             tf::StampedTransform lTransform;
-            aListener.lookupTransform("/base_link", lTFName,
-                                 ros::Time(0), lTransform);
+            ros::Time lNow = ros::Time::now();
 
-            lTransformList.emplace_back(std::move(lTransform));
+            if (aListener.waitForTransform(gBaseTFName, lTFName, lNow, ros::Duration(0.01)))
+            {
+                aListener.lookupTransform(gBaseTFName, lTFName, lNow, lTransform);
+
+                lTransformList.emplace_back(std::move(lTransform));
+            }
         }
         catch (const tf::TransformException& ex)
         {
-            ROS_ERROR("%s",ex.what());
-            ros::Duration(1.0).sleep();
+            ROS_ERROR("Failed to retrieve transform of '%s': %s", lTFName.c_str(), ex.what());
+            throw std::runtime_error("Failed to retrieve transform of '" + lTFName + 
+                "': " + ex.what());
         }
     }
     return lTransformList;

@@ -26,7 +26,16 @@ WMAdmitance::WMAdmitance()
 {
     aAdmitanceNode.getParam("sara_admitance/joint_names", aJointNames);
 
-    aGravityModel = std::make_unique<WMGravityModel>(aJointNames, 7);
+    // Retrieve link names for each joint
+    std::vector<std::string> lLinkNames;
+    for (const std::string& lJointName : aJointNames)
+    {
+        std::vector<std::string> lLinkName;
+        aAdmitanceNode.getParam("sara_admitance/" + lJointName, lLinkName);
+        lLinkNames.emplace_back(std::move(lLinkName[0]));
+    }
+
+    aGravityModel = std::make_unique<WMGravityModel>(lLinkNames, 7);
 
     TransferFunctionCoefficient lFunctionCoeff;
     lFunctionCoeff.aNumeratorFactor = Eigen::ArrayXXd::Zero(aJointNames.size(), 2 + 1);
