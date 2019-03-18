@@ -42,6 +42,7 @@ add_library(${PROJECT_NAME}
         src/WMAdmitance/WMAdmitance.cpp
         src/WMAdmitance/WMGravityModel.cpp
         src/WMUtilities/DiscreteTransferFunction.cpp
+        src/WMUtilities/URDFHelper.cpp
         )
 
 add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
@@ -59,3 +60,9 @@ install(TARGETS ${PROJECT_NAME}
 
 install(FILES wm_admitance_plugin.xml
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+
+#==========================================================================
+# U N I T   T E S T S
+if (${CATKIN_ENABLE_TESTING})
+ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test)
+endif()

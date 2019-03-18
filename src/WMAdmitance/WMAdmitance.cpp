@@ -26,7 +26,7 @@ WMAdmitance::WMAdmitance()
 {
     aAdmitanceNode.getParam("sara_admitance/joint_names", aJointNames);
 
-    aGravityModel = std::make_unique<WMGravityModel>(aJointNames);
+    aGravityModel = std::make_unique<WMGravityModel>(aJointNames, 7);
 
     TransferFunctionCoefficient lFunctionCoeff;
     lFunctionCoeff.aNumeratorFactor = Eigen::ArrayXXd::Zero(aJointNames.size(), 2 + 1);
