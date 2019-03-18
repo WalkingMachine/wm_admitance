@@ -35,7 +35,6 @@ public:
 
     }
 
-
     std::vector<std::string> s{""};
     std::string aURDFFilePath;
     std::unique_ptr<WMGravityModel> aGravityModel;
@@ -49,13 +48,9 @@ TEST_F(GravityModel_Unit_Test, TestGravityModel)
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "gravitymodel_test");
-    std::vector<std::string> s{""};
-    std::string aURDFFilePath = "/home/olavoie/sara_ws/src/sara_description/urdf/model.urdf";
-    WMGravityModel aGravityModel(s, 7);
-    CompensatedTorqueVector ss = aGravityModel.process();
-    //testing::InitGoogleTest(&argc, argv);
-    //return RUN_ALL_TESTS();
+    ros::init(argc, argv, "salut");
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
 
 

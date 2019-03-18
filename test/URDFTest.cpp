@@ -40,9 +40,8 @@ public:
 
 TEST_F(URDFParse_Unit_Test, TestUrdfParser)
 {
-    URDFHelper lURDFHepler(aURDFFilePath);
-
-    aRobotData = lURDFHepler.getRobotData(7);
+    URDFHelper lURDFHepler;
+    aRobotData = lURDFHepler.getRobotData(aURDFFilePath, 7);
 }
 
 

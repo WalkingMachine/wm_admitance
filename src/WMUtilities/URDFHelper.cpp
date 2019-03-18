@@ -1,31 +1,37 @@
 //
 // Created by olavoie on 15/03/19.
 //
+#include <ros/ros.h>
+#include <URDFHelper.h>
 
 #include "URDFHelper.h"
 
 using namespace wm_admitance::utilities;
 
-URDFHelper::URDFHelper()
-{
-    if (!aURDFModel.initParam("/robot_description"))
-    {
-        ROS_ERROR("Failed to parse URDF parameter server '/robot_description'");
-        throw std::runtime_error("Failed to parse URDF parameter server '/robot_description'");
-    }
-}
-
-URDFHelper::URDFHelper(const std::string& pURDFFilePath)
+RobotData URDFHelper::getRobotData(const std::string& pURDFFilePath, const size_t pActuatorCount)
 {
     if (!aURDFModel.initFile(pURDFFilePath))
     {
         ROS_ERROR("Failed to parse urdf file '%s'", pURDFFilePath.c_str());
         throw std::runtime_error("Failed to parse urdf file " + pURDFFilePath);
     }
+
+    return retrieveDesiredData(pActuatorCount);
 }
 
 RobotData URDFHelper::getRobotData(const size_t pActuatorCount)
 {
+    if (!aURDFModel.initParam("/robot_description"))
+    {
+        ROS_ERROR("Failed to parse urdf from param");
+        throw std::runtime_error("Failed to parse urdf from param ");
+    }
+
+    return retrieveDesiredData(pActuatorCount);
+}
+
+RobotData URDFHelper::retrieveDesiredData(const size_t pActuatorCount) {
+
     RobotData lRobotData;
     lRobotData.aLinkMass.resize(pActuatorCount);
     lRobotData.aInertiaTensor.resize(pActuatorCount);
@@ -39,7 +45,7 @@ RobotData URDFHelper::getRobotData(const size_t pActuatorCount)
     {
         urdf::LinkConstSharedPtr lLink;
         lLink = aURDFModel.links_.at(linkName);
-        
+
         lRobotData.aLinkMass[lActuatorCount] = lLink->inertial->mass;
 
         lRobotData.aCenterOfMass[lActuatorCount].setValue(lLink->inertial->origin.position.x,
@@ -51,7 +57,6 @@ RobotData URDFHelper::getRobotData(const size_t pActuatorCount)
                                                            lLink->inertial->ixz, lLink->inertial->iyz, lLink->inertial->izz);
         ++lActuatorCount;
     }
-
 
     return lRobotData;
 }
