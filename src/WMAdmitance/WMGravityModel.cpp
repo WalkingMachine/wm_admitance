@@ -18,10 +18,9 @@ namespace
     const std::string gBaseTFName = ""; // ajouter le nom du TF de la base
 }
 
-WMGravityModel::WMGravityModel(const std::vector<std::string>& pTFNames, const std::string& pURDFFilePath, size_t pActuatorCount) :
+WMGravityModel::WMGravityModel(const std::vector<std::string>& pTFNames, size_t pActuatorCount) :
     aTFNames(pTFNames),
-    aActuatorCount{pActuatorCount},
-    aURDFFilePath(pURDFFilePath)
+    aActuatorCount(pActuatorCount)
 {
     aJointTransform.resize(aActuatorCount);
     aRotationMatrix.resize(aActuatorCount + 1);
@@ -34,11 +33,7 @@ WMGravityModel::WMGravityModel(const std::vector<std::string>& pTFNames, const s
 
     // Get only needed information from URDF file
     utilities::URDFHelper lURDFParser;
-    aRobotData = lURDFParser.getRobotData(aURDFFilePath, aActuatorCount);
-
-    // Peut-etre une liste de subscribe ici
-    //aIMUSubHandle = aGravityNode.subscribe("imu", 1000, &WMGravityModule::imuCallback, this);
-
+    aRobotData = lURDFParser.getRobotData(aActuatorCount);
 }
 
 CompensatedTorqueVector WMGravityModel::process()

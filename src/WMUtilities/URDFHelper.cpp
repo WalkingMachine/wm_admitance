@@ -6,8 +6,25 @@
 
 using namespace wm_admitance::utilities;
 
+URDFHelper::URDFHelper()
+{
+    if (!aURDFModel.initParam("/robot_description"))
+    {
+        ROS_ERROR("Failed to parse URDF parameter server '/robot_description'");
+        throw std::runtime_error("Failed to parse URDF parameter server '/robot_description'");
+    }
+}
 
-RobotData URDFHelper::getRobotData(const std::string &pURDFFilePath, const size_t pActuatorCount)
+URDFHelper::URDFHelper(const std::string& pURDFFilePath)
+{
+    if (!aURDFModel.initFile(pURDFFilePath))
+    {
+        ROS_ERROR("Failed to parse urdf file '%s'", pURDFFilePath.c_str());
+        throw std::runtime_error("Failed to parse urdf file " + pURDFFilePath);
+    }
+}
+
+RobotData URDFHelper::getRobotData(const size_t pActuatorCount)
 {
     RobotData lRobotData;
     lRobotData.aLinkMass.resize(pActuatorCount);
@@ -16,12 +33,6 @@ RobotData URDFHelper::getRobotData(const std::string &pURDFFilePath, const size_
 
     std::vector<std::string> lLinkName {"right_clavicular_link", "right_upper_arm_upper_link", "right_upper_arm_lower_link",
                                         "right_forearm_upper_link", "right_wrist_upper_link", "right_wrist_lower_link", "right_socket_link"};
-
-    if (!aURDFModel.initParam("/robot_description"))
-    {
-        ROS_ERROR("Failed to parse urdf file '%s'", pURDFFilePath.c_str());
-        throw std::runtime_error("Failed to parse urdf file " + pURDFFilePath);
-    }
 
     size_t lActuatorCount{0};
     for (std::string & linkName : lLinkName)
@@ -44,5 +55,3 @@ RobotData URDFHelper::getRobotData(const std::string &pURDFFilePath, const size_
 
     return lRobotData;
 }
-
-

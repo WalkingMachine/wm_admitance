@@ -3,6 +3,7 @@
 //
 
 #include <gtest/gtest.h>
+#include <stdexcept>
 #include "URDFHelper.h"
 #include "ControlTypes.h"
 
@@ -16,7 +17,15 @@ public:
 
     void SetUp() override
     {
-        aURDFFilePath = "/home/olavoie/sara_ws/src/sara_description/urdf/model.urdf";
+        char const* lTemp = getenv("HOME");
+        if (lTemp == NULL) 
+        {
+            throw std::runtime_error("Couldn't retrieve environment variable HOME");
+        } 
+        else 
+        {
+            aURDFFilePath = std::string(getenv("HOME")) + "/sara_ws/src/sara_description/urdf/model.urdf";
+        }
     }
 
     void TearDown() override
@@ -25,17 +34,15 @@ public:
     }
 
 
-    RobotData   lRobotData;
-    URDFHelper  aURDFHelper;
+    RobotData   aRobotData;
     std::string aURDFFilePath;
 };
 
 TEST_F(URDFParse_Unit_Test, TestUrdfParser)
 {
-    urdf::Model aURDFModel;
+    URDFHelper lURDFHepler(aURDFFilePath);
 
-
-
+    aRobotData = lURDFHepler.getRobotData(7);
 }
 
 

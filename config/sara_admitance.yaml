@@ -5,6 +5,3 @@ sara_admitance:
         - right_shoulder_yaw_joint
         - right_elbow_pitch_joint
         - right_elbow_yaw_joint
-
-    urdf_path:
-        - test

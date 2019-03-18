@@ -3,6 +3,7 @@
 //
 
 #include <gtest/gtest.h>
+#include <memory>
 #include "WMGravityModel.h"
 #include "ControlTypes.h"
 
@@ -12,12 +13,21 @@ using namespace wm_admitance;
 class GravityModel_Unit_Test : public testing::Test
 {
 public:
-    GravityModel_Unit_Test() : aURDFFilePath{"/home/olavoie/sara_ws/src/sara_description/urdf/model.urdf"},  aGravityModel(s, aURDFFilePath, 7) {}
+    GravityModel_Unit_Test() = default;
     virtual ~GravityModel_Unit_Test() = default;
 
     void SetUp() override
     {
-        aURDFFilePath = "/home/olavoie/sara_ws/src/sara_description/urdf/model.urdf";
+        char const* lTemp = getenv("HOME");
+        if (lTemp == NULL) 
+        {
+            throw std::runtime_error("Couldn't retrieve environment variable HOME");
+        } 
+        else 
+        {
+            aURDFFilePath = std::string(getenv("HOME")) + "/sara_ws/src/sara_description/urdf/model.urdf";
+        }
+        aGravityModel = std::unique_ptr<WMGravityModel>(new WMGravityModel(s, 7));
     }
 
     void TearDown() override
@@ -27,22 +37,22 @@ public:
 
 
     std::vector<std::string> s{""};
-    std::string aURDFFilePath = "/home/olavoie/sara_ws/src/sara_description/urdf/model.urdf";
-    WMGravityModel aGravityModel;
+    std::string aURDFFilePath;
+    std::unique_ptr<WMGravityModel> aGravityModel;
 };
 
 TEST_F(GravityModel_Unit_Test, TestGravityModel)
 {
-
-    CompensatedTorqueVector ss = aGravityModel.process();
+    CompensatedTorqueVector ss = aGravityModel->process();
 }
 
 
 int main(int argc, char **argv)
 {
+    ros::init(argc, argv, "gravitymodel_test");
     std::vector<std::string> s{""};
     std::string aURDFFilePath = "/home/olavoie/sara_ws/src/sara_description/urdf/model.urdf";
-    WMGravityModel aGravityModel(s, aURDFFilePath, 7);
+    WMGravityModel aGravityModel(s, 7);
     CompensatedTorqueVector ss = aGravityModel.process();
     //testing::InitGoogleTest(&argc, argv);
     //return RUN_ALL_TESTS();

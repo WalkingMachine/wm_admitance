@@ -13,13 +13,15 @@ namespace wm_admitance
 {
     namespace utilities
     {
-        class URDFHelper
+        class URDFHelper final
         {
         public:
-            URDFHelper() = default;
-            ~URDFHelper() = default;
+            URDFHelper();
+            URDFHelper(const std::string& pURDFFilePath);
+            ~URDFHelper() noexcept = default;
 
-            RobotData getRobotData(const std::string & pURDFFilePath, const size_t pActuatorCount);
+            RobotData getRobotData(const size_t pActuatorCount);
+            RobotData getRobotData(const std::string& pURDFFilePath, const size_t pActuatorCount);
 
         private:
             urdf::Model aURDFModel;

@@ -7,10 +7,14 @@
 
 #include <string>
 #include <vector>
-#include <unordered_map>
+#include <map>
 #include <memory>
 #include <ros/ros.h>
 #include <sensor_msgs/JointState.h>
+#include <atomic>
+#include <future>
+#include <mutex>
+#include <thread>
 
 #include "WMGravityModel.h"
 
@@ -21,19 +25,22 @@ namespace wm_admitance
     /**
      * \brief Type of map of joint name by admitance velocity type
      */
-    using AdmitanceVelocityMapType = std::unordered_map<std::string, double>;
+    using AdmitanceVelocityMapType = std::map<std::string, double>;
 
     class WMAdmitance final
     {
     public:
-        WMAdmitance(ros::NodeHandle& pRootNode);
-        ~WMAdmitance() noexcept = default;
+        static WMAdmitance* getInstance();
 
         double getAdmitanceVelocityFromJoint(const std::string& pJointName);
 
         void process();
 
     private:
+        WMAdmitance();
+        ~WMAdmitance() noexcept = default;
+        WMAdmitance(const WMAdmitance&)= delete;
+        WMAdmitance& operator=(const WMAdmitance&)= delete;
 
         void jointStateCallback(const sensor_msgs::JointState& pMsg);
 
@@ -41,6 +48,9 @@ namespace wm_admitance
         std::vector<double> calculateAdmitanceTorque(const std::vector<double>& pCompensatedTorque);
 
         double getEffortFromJoint(const std::string& pJointName);
+
+        static std::atomic<WMAdmitance*> aInstance;
+        static std::mutex aMutex;
 
         bool aFirstCheck{false};
 

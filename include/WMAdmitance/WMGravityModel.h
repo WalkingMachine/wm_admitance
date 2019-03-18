@@ -24,9 +24,8 @@ namespace wm_admitance
     class WMGravityModel final
     {
     public:
-        WMGravityModel(const std::vector<std::string>& pTFNames, const std::string& pURDFFilePath, size_t pActuatorCount);
+        WMGravityModel(const std::vector<std::string>& pTFNames, size_t pActuatorCount);
         ~WMGravityModel()  = default;
-
 
         CompensatedTorqueVector process();
 

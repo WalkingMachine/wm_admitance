@@ -10,6 +10,9 @@
 using namespace wm_admitance;
 using namespace wm_admitance::utilities;
 
+std::atomic<WMAdmitance*> WMAdmitance::aInstance;
+std::mutex WMAdmitance::aMutex;
+
 namespace std
 {
     template<typename T, typename... Args>
@@ -19,25 +22,20 @@ namespace std
     }
 }
 
-WMAdmitance::WMAdmitance(ros::NodeHandle& pRootNode)
+WMAdmitance::WMAdmitance()
 {
-    // Construire la fonction de transfer DiscreteTransferFunction
+    aAdmitanceNode.getParam("sara_admitance/joint_names", aJointNames);
 
-    pRootNode.getParam("sara_admitance/joint_names", aJointNames);
-
-    std::string lURDFPath;
-    pRootNode.getParam("sara_admitance/urdf_path", lURDFPath);
-
-    aGravityModel = std::make_unique<WMGravityModel>(aJointNames, std::move(lURDFPath), 7);
+    aGravityModel = std::make_unique<WMGravityModel>(aJointNames, 7);
 
     TransferFunctionCoefficient lFunctionCoeff;
-    lFunctionCoeff.aNumeratorFactor = Eigen::ArrayXXd::Zero(aJointNames.size(), 2);
-    lFunctionCoeff.aDenominatorFactor = Eigen::ArrayXXd::Zero(aJointNames.size(), 2 + 1);
+    lFunctionCoeff.aNumeratorFactor = Eigen::ArrayXXd::Zero(aJointNames.size(), 2 + 1);
+    lFunctionCoeff.aDenominatorFactor = Eigen::ArrayXXd::Zero(aJointNames.size(), 2);
 
     for (int i = 0; i < aJointNames.size(); i++)
     {
-        lFunctionCoeff.aNumeratorFactor.row(i) << -1.970052211604768, 0.970446261452074;
-        lFunctionCoeff.aDenominatorFactor.row(i)   << 0.004925623091321, 0.009851246182642, 0.004925623091321;
+        lFunctionCoeff.aDenominatorFactor.row(i) << -1.970052211604768, 0.970446261452074;
+        lFunctionCoeff.aNumeratorFactor.row(i)   << 0.004925623091321, 0.009851246182642, 0.004925623091321;
     }
 
     aDiscreteTF = std::make_unique<DiscreteTransferFunction>(
@@ -53,6 +51,22 @@ WMAdmitance::WMAdmitance(ros::NodeHandle& pRootNode)
     aJointStateSub = aAdmitanceNode.subscribe("joint_states", 1, &WMAdmitance::jointStateCallback, this);
 }
 
+WMAdmitance* WMAdmitance::getInstance()
+{
+    WMAdmitance* lInstance = aInstance.load(std::memory_order_acquire);
+    if (!lInstance)
+    {
+        std::lock_guard<std::mutex> lLock(aMutex);
+        lInstance = aInstance.load(std::memory_order_relaxed);
+        if(!lInstance)
+        {
+            lInstance = new WMAdmitance();
+            aInstance.store(lInstance, std::memory_order_release);
+        }
+    }   
+    return lInstance;
+}
+
 double WMAdmitance::getAdmitanceVelocityFromJoint(const std::string& pJointName)
 {
     double lVelocity = 0.0f;
@@ -66,37 +80,16 @@ double WMAdmitance::getAdmitanceVelocityFromJoint(const std::string& pJointName)
 
 void WMAdmitance::process()
 {
-    //ROS_INFO("%lf", aGravityModel->process()[0]);
     std::vector<double> lAdmitanceTorque =
         calculateAdmitanceTorque(aGravityModel->process());
 
-    size_t lIndex = 0;
+    updateAdmitanceVelocity(
+        aDiscreteTF->updateVector(Eigen::Map<Eigen::VectorXd>(lAdmitanceTorque.data(), lAdmitanceTorque.size())));
+
     for (const auto& lJointName : aJointNames)
     {
-        ROS_INFO("%s: %lf", lJointName.c_str(), lAdmitanceTorque[lIndex]);
-        ++lIndex;
+        ROS_INFO("Velocity of %s: %lf", lJointName.c_str(), getAdmitanceVelocityFromJoint(lJointName));
     }
-
-    //Eigen::VectorXd lEigenVect(5);
-    //size_t lIndexEigen = 0;
-    //for (const auto& lTorque : lAdmitanceTorque)
-    //{
-    //    lEigenVect(lIndexEigen) = lTorque;
-    //    ++lIndexEigen;
-    //}
-
-
-    //aDiscreteTF->update(lEigenVect);
-
-    //updateAdmitanceVelocity(
-    //    aDiscreteTF->updateVector(Eigen::Map<Eigen::VectorXd>(lAdmitanceTorque.data(), lAdmitanceTorque.size())));
-
-    //updateAdmitanceVelocity(lAdmitanceTorque);
-
-    //for (const auto& lJointName : aJointNames)
-    //{
-    //    ROS_INFO("Effort of %s: %lf", lJointName.c_str(), getAdmitanceVelocityFromJoint(lJointName));
-    //}
 }
 
 void WMAdmitance::jointStateCallback(const sensor_msgs::JointState& pMsg)
