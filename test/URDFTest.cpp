@@ -26,7 +26,7 @@ public:
 
 
     RobotData   lRobotData;
-    wm_admitance::utilities::URDFHelper  aURDFHelper;
+    URDFHelper  aURDFHelper;
     std::string aURDFFilePath;
 };
 

@@ -17,7 +17,7 @@ RobotData URDFHelper::getRobotData(const std::string &pURDFFilePath, const size_
     std::vector<std::string> lLinkName {"right_clavicular_link", "right_upper_arm_upper_link", "right_upper_arm_lower_link",
                                         "right_forearm_upper_link", "right_wrist_upper_link", "right_wrist_lower_link", "right_socket_link"};
 
-    if (!aURDFModel.initFile(pURDFFilePath))
+    if (!aURDFModel.initParam("/robot_description"))
     {
         ROS_ERROR("Failed to parse urdf file '%s'", pURDFFilePath.c_str());
         throw std::runtime_error("Failed to parse urdf file " + pURDFFilePath);

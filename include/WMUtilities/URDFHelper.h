@@ -16,7 +16,7 @@ namespace wm_admitance
         class URDFHelper
         {
         public:
-            URDFHelper();
+            URDFHelper() = default;
             ~URDFHelper() = default;
 
             RobotData getRobotData(const std::string & pURDFFilePath, const size_t pActuatorCount);

@@ -23,6 +23,10 @@ namespace wm_admitance
 
         struct RobotData
         {
+            ~RobotData()
+            {
+
+            }
             std::vector<double> aLinkMass;
             std::vector<tf::Matrix3x3> aInertiaTensor;
             std::vector<tf::Vector3> aCenterOfMass;

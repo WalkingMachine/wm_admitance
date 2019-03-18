@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <tf/transform_listener.h>
 #include <WMGravityModel.h>
-#include "URDFHelper.h"
+#include "../WMUtilities/URDFHelper.h"
 
 
 using namespace wm_admitance;
@@ -18,7 +18,7 @@ namespace
     const std::string gBaseTFName = ""; // ajouter le nom du TF de la base
 }
 
-WMGravityModule::WMGravityModule(const std::vector<std::string>& pTFNames, const std::string& pURDFFilePath, size_t pActuatorCount) :
+WMGravityModel::WMGravityModel(const std::vector<std::string>& pTFNames, const std::string& pURDFFilePath, size_t pActuatorCount) :
     aTFNames(pTFNames),
     aActuatorCount{pActuatorCount},
     aURDFFilePath(pURDFFilePath)
@@ -38,9 +38,10 @@ WMGravityModule::WMGravityModule(const std::vector<std::string>& pTFNames, const
 
     // Peut-etre une liste de subscribe ici
     //aIMUSubHandle = aGravityNode.subscribe("imu", 1000, &WMGravityModule::imuCallback, this);
+
 }
 
-CompensatedTorqueVector WMGravityModule::process()
+CompensatedTorqueVector WMGravityModel::process()
 {
     aJointTransform = retrievePositionFromTF();
     retrieveTransformInformation();
@@ -67,13 +68,20 @@ CompensatedTorqueVector WMGravityModule::process()
 }
 
 // Pas certain de ce qu'on devrait retourner, geometry_msgs::PointStamped peut être?
-std::vector<tf::StampedTransform>  WMGravityModule::retrievePositionFromTF()
+std::vector<tf::StampedTransform>  WMGravityModel::retrievePositionFromTF()
 {
     // On utilise aTFNames pour trouver les TFs des joints
     // Récupère la position du TF du joint passé en paramètre
+    return std::vector<tf::StampedTransform>();
 }
 
-void WMGravityModule::retrieveTransformInformation()
+//void WMGravityModule::imuCallback(const sensor_msgs::Imu::ConstPtr& pIMUMessage)
+//{
+//    // http://wiki.ros.org/Robots/evarobot/Tutorials/indigo/IMU
+//    // On set atomiquement des attributs de classes (float_ ou l'objet orientation.
+//}
+
+void WMGravityModel::retrieveTransformInformation()
 {
     size_t lActuatorCount{0};
     for (tf::StampedTransform & lTransform : aJointTransform)
@@ -85,9 +93,3 @@ void WMGravityModule::retrieveTransformInformation()
     aRotationMatrix[lActuatorCount + 1].setIdentity();
     aTranslationVector[lActuatorCount + 1].setZero();
 }
-
-//void WMGravityModule::imuCallback(const sensor_msgs::Imu::ConstPtr& pIMUMessage)
-//{
-//    // http://wiki.ros.org/Robots/evarobot/Tutorials/indigo/IMU
-//    // On set atomiquement des attributs de classes (float_ ou l'objet orientation.
-//}

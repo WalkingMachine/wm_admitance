@@ -12,7 +12,7 @@ using namespace wm_admitance;
 class GravityModel_Unit_Test : public testing::Test
 {
 public:
-    GravityModel_Unit_Test() = default;
+    GravityModel_Unit_Test() : aURDFFilePath{"/home/olavoie/sara_ws/src/sara_description/urdf/model.urdf"},  aGravityModel(s, aURDFFilePath, 7) {}
     virtual ~GravityModel_Unit_Test() = default;
 
     void SetUp() override
@@ -26,28 +26,26 @@ public:
     }
 
 
-    RobotData   lRobotData;
-    std::string aURDFFilePath;
+    std::vector<std::string> s{""};
+    std::string aURDFFilePath = "/home/olavoie/sara_ws/src/sara_description/urdf/model.urdf";
+    WMGravityModel aGravityModel;
 };
 
-TEST_F(GravityModel_Unit_Test, TestUrdfParser)
+TEST_F(GravityModel_Unit_Test, TestGravityModel)
 {
-    std::vector<std::string> s{""};
-    WMGravityModule gravityModel(s, aURDFFilePath, 7);
 
-
-
-
-
-
-
+    CompensatedTorqueVector ss = aGravityModel.process();
 }
 
 
 int main(int argc, char **argv)
 {
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    std::vector<std::string> s{""};
+    std::string aURDFFilePath = "/home/olavoie/sara_ws/src/sara_description/urdf/model.urdf";
+    WMGravityModel aGravityModel(s, aURDFFilePath, 7);
+    CompensatedTorqueVector ss = aGravityModel.process();
+    //testing::InitGoogleTest(&argc, argv);
+    //return RUN_ALL_TESTS();
 }
 
 

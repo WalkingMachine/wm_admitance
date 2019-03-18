@@ -26,6 +26,12 @@ Eigen::VectorXd DiscreteTransferFunction::update(const Eigen::VectorXd& pError)
     return aFilterResult;
 }
 
+std::vector<double> DiscreteTransferFunction::updateVector(const Eigen::VectorXd& pError)
+{
+    Eigen::VectorXd lEigen = update(pError);
+    return std::vector<double>(lEigen.data(), lEigen.data() + lEigen.rows() * lEigen.cols());
+}
+
 void DiscreteTransferFunction::updateHistory()
 {
     Eigen::ArrayXXd lOutputHistory = Eigen::ArrayXXd::Zero(aNbTransferFunction, aFilterOrder);
