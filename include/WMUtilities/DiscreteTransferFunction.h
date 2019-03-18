@@ -8,6 +8,7 @@
 
 #include "ControlTypes.h"
 
+#include <vector>
 #include <eigen3/Eigen/Eigen>
 
 namespace wm_admitance
@@ -26,6 +27,7 @@ namespace wm_admitance
             ~DiscreteTransferFunction() noexcept = default;
 
             Eigen::VectorXd update(const Eigen::VectorXd& pError);
+            std::vector<double> updateVector(const Eigen::VectorXd& pError);
             
             void setZero();
 

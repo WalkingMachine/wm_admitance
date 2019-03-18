@@ -15,36 +15,32 @@ namespace
     const std::string gBaseTFName = ""; // ajouter le nom du TF de la base
 }
 
-WMGravityModule::WMGravityModule(const std::vector<std::string>& pTFNames, const std::string& pURDFFilePath) :
-    aTFNames(pTFNames),
-    aURDFFilePath(pURDFFilePath)
+WMGravityModel::WMGravityModel(const std::vector<std::string>& pTFNames) :
+    aTFNames(pTFNames)
 {
     // Initialisation du URDF parser
-    if (!aURDFModel.initFile(aURDFFilePath))
+    if (!aURDFModel.initParam("/robot_description"))
     {
-         ROS_ERROR("Failed to parse urdf file '%s'", pURDFFilePath.c_str());
-         throw std::runtime_error("Failed to parse urdf file " + pURDFFilePath);
+         ROS_ERROR("Failed to parse URDF parameter server '/robot_description'");
+         throw std::runtime_error("Failed to parse URDF parameter server '/robot_description'");
     }
 
-    // Peut-etre une liste de subscribe ici
-    //aIMUSubHandle = aGravityNode.subscribe("imu", 1000, &WMGravityModule::imuCallback, this);
+    urdf::LinkConstSharedPtr lLink;
+    lLink = aURDFModel.links_.at("right_clavicular_link");
+    ROS_INFO("MASSE: %lf", lLink->inertial->mass);
 }
 
-CompensatedTorqueVector WMGravityModule::process()
+CompensatedTorqueVector WMGravityModel::process()
 {
+    CompensatedTorqueVector lCompensatedTorque = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
 
+    return lCompensatedTorque;
 }
 
-std::vector<tf::Quaternion>  WMGravityModule::retrievePositionFromTF()
+std::vector<tf::Quaternion>  WMGravityModel::retrievePositionFromTF()
 {
-   const auto& lList = retrievePositionFromTF()
-
-    // On utilise aTFNames pour trouver les TFs des joints
-    std::vector<std::string> lTFNameList;
-
-
     std::vector<tf::Quaternion> lQuaternionList;
-    for (const std::string& lTFName : lTFNameList)
+    for (const std::string& lTFName : aTFNames)
     {
         try
         {
@@ -62,9 +58,3 @@ std::vector<tf::Quaternion>  WMGravityModule::retrievePositionFromTF()
     }
     return lQuaternionList;
 }
-
-//void WMGravityModule::imuCallback(const sensor_msgs::Imu::ConstPtr& pIMUMessage)
-//{
-//    // http://wiki.ros.org/Robots/evarobot/Tutorials/indigo/IMU
-//    // On set atomiquement des attributs de classes (float_ ou l'objet orientation.
-//}

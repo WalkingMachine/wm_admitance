@@ -1,0 +1,7 @@
+sara_admitance:
+    joint_names:
+        - right_shoulder_roll_joint
+        - right_shoulder_pitch_joint
+        - right_shoulder_yaw_joint
+        - right_elbow_pitch_joint
+        - right_elbow_yaw_joint
