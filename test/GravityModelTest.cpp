@@ -18,15 +18,6 @@ public:
 
     void SetUp() override
     {
-        char const* lTemp = getenv("HOME");
-        if (lTemp == NULL) 
-        {
-            throw std::runtime_error("Couldn't retrieve environment variable HOME");
-        } 
-        else 
-        {
-            aURDFFilePath = std::string(getenv("HOME")) + "/sara_ws/src/sara_description/urdf/model.urdf";
-        }
         aGravityModel = std::unique_ptr<WMGravityModel>(new WMGravityModel(s, 7));
     }
 
@@ -36,7 +27,6 @@ public:
     }
 
     std::vector<std::string> s{""};
-    std::string aURDFFilePath;
     std::unique_ptr<WMGravityModel> aGravityModel;
 };
 

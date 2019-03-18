@@ -43,8 +43,8 @@ CompensatedTorqueVector WMGravityModel::process()
 
     aAccelerationVector[0].setValue(0.0, 0.0, -9.81); // adding gravity
 
-    aBackwardForce[aActuatorCount + 1].setZero();
-    aBackwardTorque[aActuatorCount + 1].setZero();
+    aBackwardForce[aActuatorCount].setZero();
+    aBackwardTorque[aActuatorCount].setZero();
 
     for (size_t i{0}; i < aActuatorCount; ++i)
     {
