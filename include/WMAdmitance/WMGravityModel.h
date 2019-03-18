@@ -28,7 +28,7 @@ namespace wm_admitance
 
     private:
 
-        std::vector<tf::Quaternion> retrievePositionFromTF();
+        std::vector<tf::StampedTransform> retrievePositionFromTF();
 
 
         const tf::TransformListener aListener;

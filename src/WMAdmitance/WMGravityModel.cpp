@@ -37,9 +37,9 @@ CompensatedTorqueVector WMGravityModel::process()
     return lCompensatedTorque;
 }
 
-std::vector<tf::Quaternion>  WMGravityModel::retrievePositionFromTF()
+std::vector<tf::StampedTransform>  WMGravityModel::retrievePositionFromTF()
 {
-    std::vector<tf::Quaternion> lQuaternionList;
+    std::vector<tf::StampedTransform> lTransformList;
     for (const std::string& lTFName : aTFNames)
     {
         try
@@ -48,7 +48,7 @@ std::vector<tf::Quaternion>  WMGravityModel::retrievePositionFromTF()
             aListener.lookupTransform("/base_link", lTFName,
                                  ros::Time(0), lTransform);
 
-            lQuaternionList.emplace_back(std::move(lTransform.getRotation()));
+            lTransformList.emplace_back(std::move(lTransform));
         }
         catch (const tf::TransformException& ex)
         {
@@ -56,5 +56,5 @@ std::vector<tf::Quaternion>  WMGravityModel::retrievePositionFromTF()
             ros::Duration(1.0).sleep();
         }
     }
-    return lQuaternionList;
+    return lTransformList;
 }
