@@ -1,6 +1,7 @@
 // \file WMGravityModel.h
 // \brief Declaration of gravity module.
-// Created by kevin on 07/03/2019.
+// \author Kevin Blackburn
+// \author Olivier Lavoie
 
 #ifndef WM_GRAVITY_MODULE_H
 #define WM_GRAVITY_MODULE_H
@@ -22,7 +23,9 @@ namespace wm_admitance
     class WMGravityModel final
     {
     public:
-        WMGravityModel(const std::vector<std::string>& pTFNames, size_t pActuatorCount);
+        WMGravityModel(const std::vector<std::string>& pTFNames,
+                       size_t pActuatorCount,
+                       bool pVerboseMode = false);
         ~WMGravityModel()  = default;
 
         CompensatedTorqueVector process();
@@ -34,6 +37,7 @@ namespace wm_admitance
 
         const tf::TransformListener aListener;
         size_t aActuatorCount;
+        bool aVerboseMode;
 
         const std::vector<std::string> aTFNames;
         const std::string aURDFFilePath;

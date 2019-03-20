@@ -11,11 +11,16 @@ find_package(catkin REQUIRED COMPONENTS
     roscpp
     sensor_msgs
     tf
+    dynamic_reconfigure
 )
 
 ## System dependencies are found with CMake's conventions
  find_package(Boost REQUIRED COMPONENTS system)
  find_package(cmake_modules REQUIRED)
+
+generate_dynamic_reconfigure_options(
+        config/sara_admitance.cfg
+)
 
 
 catkin_package(
@@ -46,6 +51,7 @@ add_library(${PROJECT_NAME}
         )
 
 add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_gencfg)
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 

@@ -1,6 +1,8 @@
 // \file WMGravityModel.cpp
 // \brief Definition of gravity module.
-// Created by kevin on 07/03/2019.
+// \author Kevin Blackburn
+// \author Olivier Lavoie
+// \author Véronica Romero
 
 #include "WMGravityModel.h"
 
@@ -15,12 +17,13 @@ using namespace wm_admitance;
 
 namespace
 {
-    const std::string gBaseTFName = "base_link"; // ajouter le nom du TF de la base
+    const std::string gBaseTFName = "base_link";
 }
 
-WMGravityModel::WMGravityModel(const std::vector<std::string>& pTFNames, size_t pActuatorCount) :
+WMGravityModel::WMGravityModel(const std::vector<std::string>& pTFNames, size_t pActuatorCount, bool pVerboseMode) :
     aTFNames(pTFNames),
-    aActuatorCount(pActuatorCount)
+    aActuatorCount(pActuatorCount),
+    aVerboseMode(pVerboseMode)
 {
     aJointTransform.resize(aActuatorCount);
     aRotationMatrix.resize(aActuatorCount + 1);
@@ -59,12 +62,15 @@ CompensatedTorqueVector WMGravityModel::process()
         aCompensatedTorque[i - 1] = aBackwardTorque[i -1].z();
     }
 
-//    size_t lIndex = 0;
-//    for (const auto& lTFName : aTFNames)
-//    {
-//        ROS_INFO("Compensated Torque of %s: %lf", lTFName.c_str(), aCompensatedTorque[lIndex]);
-//        ++lIndex;
-//    }
+    if (aVerboseMode)
+    {
+        size_t lIndex = 0;
+        for (const auto& lTFName : aTFNames)
+        {
+            ROS_INFO("Compensated Torque of %s: %lf", lTFName.c_str(), aCompensatedTorque[lIndex]);
+            ++lIndex;
+        }
+    }
 
     return aCompensatedTorque;
 }

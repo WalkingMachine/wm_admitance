@@ -23,7 +23,7 @@ namespace wm_admitance
 
         struct RobotData
         {
-            ~RobotData() = default;
+            ~RobotData() noexcept = default;
             std::vector<double> aLinkMass;
             std::vector<tf::Matrix3x3> aInertiaTensor;
             std::vector<tf::Vector3> aCenterOfMass;

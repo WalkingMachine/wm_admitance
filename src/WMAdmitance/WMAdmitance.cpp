@@ -1,6 +1,7 @@
 // \file WMAdmitance.cpp
 // \brief Definition of gravity module.
-// Created by kevin on 07/03/2019.
+// \author Kevin Blackburn
+// \author Olivier Lavoie
 
 #include "WMAdmitance.h"
 
@@ -24,7 +25,11 @@ namespace std
 
 WMAdmitance::WMAdmitance()
 {
+    // Retrieve joint names configuration
     aAdmitanceNode.getParam("sara_admitance/joint_names", aJointNames);
+
+    // Set callback for dynamic reconfiguration
+    aDynamicConfigServer.setCallback(boost::bind(&WMAdmitance::dynamicReconfigureCallback, this, _1, _2));
 
     // Retrieve link names for each joint
     std::vector<std::string> lLinkNames;
@@ -35,8 +40,10 @@ WMAdmitance::WMAdmitance()
         lLinkNames.emplace_back(std::move(lLinkName[0]));
     }
 
+    // Create unique instance of gravity model
     aGravityModel = std::make_unique<WMGravityModel>(lLinkNames, 7);
 
+    // Create discrete Transfer function
     TransferFunctionCoefficient lFunctionCoeff;
     lFunctionCoeff.aNumeratorFactor = Eigen::ArrayXXd::Zero(aJointNames.size(), 2 + 1);
     lFunctionCoeff.aDenominatorFactor = Eigen::ArrayXXd::Zero(aJointNames.size(), 2);
@@ -52,11 +59,13 @@ WMAdmitance::WMAdmitance()
             std::move(lFunctionCoeff),
             2);
 
+    // Initialize public admitance velocity
     for (const auto& lJointName : aJointNames)
     {
         aAdmitanceVelocityMap.emplace(lJointName, 0.0f);
     }
 
+    // Subscribe to the joint_state to obtain current efforts applied on joints
     aJointStateSub = aAdmitanceNode.subscribe("joint_states", 1, &WMAdmitance::jointStateCallback, this);
 }
 
@@ -76,7 +85,7 @@ WMAdmitance* WMAdmitance::getInstance()
     return lInstance;
 }
 
-double WMAdmitance::getAdmitanceVelocityFromJoint(const std::string& pJointName)
+double WMAdmitance::getAdmitanceVelocityFromJoint(const std::string& pJointName) const
 {
     double lVelocity = 0.0f;
     const auto& lIter = aAdmitanceVelocityMap.find(pJointName);
@@ -89,16 +98,22 @@ double WMAdmitance::getAdmitanceVelocityFromJoint(const std::string& pJointName)
 
 void WMAdmitance::process()
 {
-    std::vector<double> lAdmitanceTorque =
-        calculateAdmitanceTorque(aGravityModel->process());
+    if (isAdmitanceEnabled())
+    {
+        std::vector<double> lAdmitanceTorque =
+            calculateAdmitanceTorque(aGravityModel->process());
 
-    updateAdmitanceVelocity(
-        aDiscreteTF->updateVector(Eigen::Map<Eigen::VectorXd>(lAdmitanceTorque.data(), lAdmitanceTorque.size())));
+        updateAdmitanceVelocity(
+            aDiscreteTF->updateVector(Eigen::Map<Eigen::VectorXd>(lAdmitanceTorque.data(), lAdmitanceTorque.size())));
 
-    //for (const auto& lJointName : aJointNames)
-    //{
-    //    ROS_INFO("Velocity of %s: %lf", lJointName.c_str(), getAdmitanceVelocityFromJoint(lJointName));
-    //}
+        if (aVerboseMode)
+        {
+            for (const auto& lJointName : aJointNames)
+            {
+                ROS_INFO("Velocity of %s: %lf", lJointName.c_str(), getAdmitanceVelocityFromJoint(lJointName));
+            }
+        }
+    }
 }
 
 void WMAdmitance::jointStateCallback(const sensor_msgs::JointState& pMsg)
@@ -131,6 +146,16 @@ void WMAdmitance::jointStateCallback(const sensor_msgs::JointState& pMsg)
     }
 }
 
+void WMAdmitance::dynamicReconfigureCallback(sara_admitance::sara_admitanceConfig &pConfig, uint32_t pLevel)
+{
+    ROS_INFO("Reconfigure Request: %s %s", 
+             pConfig.enable_admitance ?"True":"False", 
+             pConfig.verbose_mode ?"True":"False");
+
+    aEnableAdmitance = pConfig.enable_admitance;
+    aVerboseMode = pConfig.verbose_mode;
+}
+
 void WMAdmitance::updateAdmitanceVelocity(const std::vector<double>& pAdmitanceVelocity)
 {
     size_t lIndex = 0;
@@ -147,15 +172,13 @@ std::vector<double> WMAdmitance::calculateAdmitanceTorque(const std::vector<doub
     std::vector<double> lAdmitanceTorque;
     for (const auto& lJointName : aJointNames)
     {
-        //ROS_INFO("Real effort: %lf", getEffortFromJoint(lJointName));
-        //ROS_INFO("Compensated effort: %lf", pCompensatedTorque[lIndex]);
         lAdmitanceTorque.emplace_back(getEffortFromJoint(lJointName) - pCompensatedTorque[lIndex]);
         ++lIndex;
     }
     return lAdmitanceTorque;
 }
 
-double WMAdmitance::getEffortFromJoint(const std::string& pJointName)
+double WMAdmitance::getEffortFromJoint(const std::string& pJointName) const
 {
     size_t lIndex = 0;
     double lEffort = 0.0f;

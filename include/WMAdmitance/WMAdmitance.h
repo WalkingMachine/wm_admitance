@@ -1,6 +1,7 @@
 // \file WMAdmitance.h
 // \brief Declaration of gravity module.
-// Created by kevin on 07/03/2019.
+// \author Kevin Blackburn
+// \author Olivier Lavoie
 
 #ifndef WM_ADMITANCE_H
 #define WM_ADMITANCE_H
@@ -15,6 +16,9 @@
 #include <future>
 #include <mutex>
 #include <thread>
+
+#include <dynamic_reconfigure/server.h>
+#include <wm_admitance/sara_admitanceConfig.h>
 
 #include "WMGravityModel.h"
 
@@ -32,7 +36,9 @@ namespace wm_admitance
     public:
         static WMAdmitance* getInstance();
 
-        double getAdmitanceVelocityFromJoint(const std::string& pJointName);
+        double getAdmitanceVelocityFromJoint(const std::string& pJointName) const;
+
+        bool isAdmitanceEnabled() const noexcept { return aEnableAdmitance; }
 
         void process();
 
@@ -43,16 +49,21 @@ namespace wm_admitance
         WMAdmitance& operator=(const WMAdmitance&)= delete;
 
         void jointStateCallback(const sensor_msgs::JointState& pMsg);
+        void dynamicReconfigureCallback(sara_admitance::sara_admitanceConfig &pConfig, uint32_t pLevel);
 
         void updateAdmitanceVelocity(const std::vector<double>& pAdmitanceVelocity);
         std::vector<double> calculateAdmitanceTorque(const std::vector<double>& pCompensatedTorque);
 
-        double getEffortFromJoint(const std::string& pJointName);
+        double getEffortFromJoint(const std::string& pJointName) const;
 
         static std::atomic<WMAdmitance*> aInstance;
         static std::mutex aMutex;
 
+        bool aEnableAdmitance{false};
+        bool aVerboseMode{false};
         bool aFirstCheck{false};
+
+        dynamic_reconfigure::Server<sara_admitance::sara_admitanceConfig> aDynamicConfigServer;
 
         std::unique_ptr<utilities::DiscreteTransferFunction> aDiscreteTF;
 

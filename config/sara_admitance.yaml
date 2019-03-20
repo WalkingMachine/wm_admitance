@@ -6,7 +6,9 @@ sara_admitance:
         - right_elbow_pitch_joint
         - right_elbow_yaw_joint
 
-    # Here are the link names
+    # These values define names of published transforms.
+    # These values should be the same as
+    # the ones in the joint_names array.
     right_shoulder_roll_joint:
         - right_clavicular_link
 
