@@ -20,6 +20,16 @@ namespace
     const std::string gBaseTFName = "base_link";
 }
 
+/**
+ * \brief Constructeur par défaut qui initialize les structures nécessaire
+ *        au calcul des torques compensés des joints.
+ * \param[in] pTFNames
+ * \param pActuatorCount Le nombre de joints à considérer
+ * \param pVerboseMode Le mode d'affichage
+ *
+ * \note Le nombre de joint peut différer du nombre de référentiels, car il est possible que
+ *       certains joints ne peuvent pas capter le torque appliqué.
+ */
 WMGravityModel::WMGravityModel(const std::vector<std::string>& pTFNames, size_t pActuatorCount, bool pVerboseMode) :
     aTFNames(pTFNames),
     aActuatorCount(pActuatorCount),
@@ -39,6 +49,12 @@ WMGravityModel::WMGravityModel(const std::vector<std::string>& pTFNames, size_t 
     aRobotData = lURDFParser.getRobotData(aActuatorCount);
 }
 
+/**
+ * \brief Fonction principale qui doit être appelée pour calculer les torques compensés
+ * \return La lsite des torques compensés
+ *
+ * \note Cette fonction est normalement appelée par la classe WMAdmitance
+ */
 CompensatedTorqueVector WMGravityModel::process()
 {
     aJointTransform = retrievePositionFromTF();
@@ -75,6 +91,12 @@ CompensatedTorqueVector WMGravityModel::process()
     return aCompensatedTorque;
 }
 
+/**
+ * \brief Récupère la liste des référentiels selon les noms fournis à la construction.
+ * \return Retourne la liste des référentiels
+ *
+ * \throw runtime_error Si un référentiel inexistant est accédé 
+ */
 std::vector<tf::StampedTransform>  WMGravityModel::retrievePositionFromTF()
 {
     std::vector<tf::StampedTransform> lTransformList;
@@ -104,6 +126,9 @@ std::vector<tf::StampedTransform>  WMGravityModel::retrievePositionFromTF()
     return lTransformList;
 }
 
+/**
+ * \brief Récupère les informations nécessaires dans les objets des référentiels
+ */
 void WMGravityModel::retrieveTransformInformation()
 {
     size_t lActuatorCount{0};

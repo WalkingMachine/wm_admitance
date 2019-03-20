@@ -15,9 +15,10 @@ namespace wm_admitance
 {
     namespace utilities
     {
-
-        struct TransferFunctionCoefficient;
-
+        /**
+         * \brief Une classe qui effectue un calcul d'asservissement
+         *        avec une fonction de transert.
+         */
         class DiscreteTransferFunction final
         {
 

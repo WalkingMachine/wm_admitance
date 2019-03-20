@@ -20,6 +20,17 @@ namespace wm_admitance
      */
     using CompensatedTorqueVector = std::vector<double>;
 
+    /**
+     * \brief Une classe qui obtient les torques compensés sur les joints
+     *        avec le modèle de gravité
+     *
+     * \details Cette classe calcules les vitesses requises sur chaque joint donné
+     *          via le fichier de configuration (sara_admitance.yaml). Les autres joints
+     *          sont tout de même pris en considération dans le calcul.
+     *
+     * \note En ce moment, cette classe supporte seulement l'admitance sur un seul bras.
+     *       Cette fonctionnalité devra être ajoutée si nécessaire.
+     */
     class WMGravityModel final
     {
     public:

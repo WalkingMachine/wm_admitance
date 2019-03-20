@@ -8,6 +8,12 @@
 
 using namespace wm_admitance::utilities;
 
+/**
+ * \brief Récupère les données nécessaires avec un fichier URDF
+ * \param[in] pURDFFilePath Le chemin absolu vers le fichier URDF
+ * \param pActuatorCount Le nombre de joint à considérer
+ * \return Les données nécessaires récupérées du URDF
+ */
 RobotData URDFHelper::getRobotData(const std::string& pURDFFilePath, const size_t pActuatorCount)
 {
     if (!aURDFModel.initFile(pURDFFilePath))
@@ -19,6 +25,13 @@ RobotData URDFHelper::getRobotData(const std::string& pURDFFilePath, const size_
     return retrieveDesiredData(pActuatorCount);
 }
 
+/**
+ * \brief Récupère les données nécessaires avec le paramètre du serveur
+ * \param pActuatorCount Le nombre de joint à considérer
+ * \return Les données nécessaires récupérées du URDF
+ *
+ * \note Il faut que ROS contienne le URDF (via sara_description)
+ */
 RobotData URDFHelper::getRobotData(const size_t pActuatorCount)
 {
     if (!aURDFModel.initParam("/robot_description"))
@@ -30,6 +43,11 @@ RobotData URDFHelper::getRobotData(const size_t pActuatorCount)
     return retrieveDesiredData(pActuatorCount);
 }
 
+/**
+ * \brief Récupère les données désidées pour le calcule de l'admittance
+ * \param pActuatorCount Le nombre de joint à considérer
+ * \return Les données nécessaires récupérées du URDF
+ */
 RobotData URDFHelper::retrieveDesiredData(const size_t pActuatorCount) {
 
     RobotData lRobotData;

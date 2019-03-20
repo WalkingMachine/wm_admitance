@@ -15,15 +15,22 @@ namespace wm_admitance
 {
     namespace utilities
     {
+        /**
+         * \brief Une structure contenant le numérateur et
+         *        le dénominateur d'une fonction de transfert
+         */
         struct TransferFunctionCoefficient
         {
             Eigen::ArrayXXd aNumeratorFactor;
             Eigen::ArrayXXd aDenominatorFactor;
         };
 
+        /**
+         * \brief Une structure contenant les informations
+         *        utiles pour un robot
+         */
         struct RobotData
         {
-            ~RobotData() noexcept = default;
             std::vector<double> aLinkMass;
             std::vector<tf::Matrix3x3> aInertiaTensor;
             std::vector<tf::Vector3> aCenterOfMass;

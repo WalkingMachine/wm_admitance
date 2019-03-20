@@ -1,5 +1,5 @@
 // \file WMAdmitance.cpp
-// \brief Definition of gravity module.
+// \brief Définition de la classe WMAdmitance
 // \author Kevin Blackburn
 // \author Olivier Lavoie
 
@@ -16,20 +16,32 @@ std::mutex WMAdmitance::aMutex;
 
 namespace std
 {
-    template<typename T, typename... Args>
-    unique_ptr<T> make_unique(Args&&... args)
+    /**
+     * \brief Function template qui permet de créer une instance unique.
+     * \param pArgs Paramètre variadic pour passer au constructeur de l'instance avec
+     *        la méthode du «perfect_fowarding»
+     * \tparam InstanceType Le type de l'instance
+     * \tparam Args Les arguments à passer au constructeur de l'instance
+     * \return Retourne l'instance unique.
+     */
+    template<typename InstanceType, typename... Args>
+    unique_ptr<InstanceType> make_unique(Args&&... pArgs)
     {
-        return unique_ptr<T>(new T(forward<Args>(args)...));
+        return unique_ptr<InstanceType>(new InstanceType(forward<Args>(pArgs)...));
     }
 }
 
+/**
+ * \brief Constructeur par défaut qui initialize les configurations
+ *         nécessaires pour l'admittance
+ */
 WMAdmitance::WMAdmitance()
 {
     // Retrieve joint names configuration
     aAdmitanceNode.getParam("sara_admitance/joint_names", aJointNames);
 
     // Set callback for dynamic reconfiguration
-    aDynamicConfigServer.setCallback(boost::bind(&WMAdmitance::dynamicReconfigureCallback, this, _1, _2));
+    aDynamicConfigServer.setCallback(boost::bind(&WMAdmitance::dynamicReconfigureCallback, this, _1));
 
     // Retrieve link names for each joint
     std::vector<std::string> lLinkNames;
@@ -69,6 +81,10 @@ WMAdmitance::WMAdmitance()
     aJointStateSub = aAdmitanceNode.subscribe("joint_states", 1, &WMAdmitance::jointStateCallback, this);
 }
 
+/**
+ * \brief Récupère l'instance unique «singleton» de la classe WMAdmitance.
+ * \return Retourne l'instance unique
+ */
 WMAdmitance* WMAdmitance::getInstance()
 {
     WMAdmitance* lInstance = aInstance.load(std::memory_order_acquire);
@@ -85,6 +101,11 @@ WMAdmitance* WMAdmitance::getInstance()
     return lInstance;
 }
 
+/**
+ * \brief Récupère la vitesse calculée par l'admitance d'un joint.
+ * \param[in] pJointName Le nom du joint
+ * \return Retourne la vitesse de l'admitance
+ */
 double WMAdmitance::getAdmitanceVelocityFromJoint(const std::string& pJointName) const
 {
     double lVelocity = 0.0f;
@@ -96,6 +117,12 @@ double WMAdmitance::getAdmitanceVelocityFromJoint(const std::string& pJointName)
     return lVelocity;
 }
 
+/**
+ * \brief Fonction principale qui doit être appelée pour calculer l'admitance.
+ *
+ * \note Cette fonction doit être appelée en boucle avec l'horloge principale de ROS
+ *       pour une meilleure synchronisation.
+ */
 void WMAdmitance::process()
 {
     if (isAdmitanceEnabled())
@@ -116,6 +143,15 @@ void WMAdmitance::process()
     }
 }
 
+/**
+ * \brief Fonction de «callback» pour récupérer les torques courants sur les joints
+ * \param[in] pMsg Instance contenant les informations sur les joints
+ *
+ * \throw runtime_error Si un joint fourni dans le fichier de configuration
+ *                      n'apparaît pas dans la liste des joints du message de ROS.
+ *
+ * \note Cette fonction est enregistré via ROS avec le message «joint_states»
+ */
 void WMAdmitance::jointStateCallback(const sensor_msgs::JointState& pMsg)
 {
     if (!aFirstCheck)
@@ -146,16 +182,23 @@ void WMAdmitance::jointStateCallback(const sensor_msgs::JointState& pMsg)
     }
 }
 
-void WMAdmitance::dynamicReconfigureCallback(sara_admitance::sara_admitanceConfig &pConfig, uint32_t pLevel)
+/**
+ * \brief Fonction de «callback» pour récupérer les changements de configuration
+ *        dynamiquement au «runtime»
+ * \param[in] pConfig Instance contenant les valeurs de chaque configuration.
+ *
+ * \note Les paramètres sont générés avec le fichier sara_admitance.cfg
+ */
+void WMAdmitance::dynamicReconfigureCallback(sara_admitance::sara_admitanceConfig &pConfig)
 {
-    ROS_INFO("Reconfigure Request: %s %s", 
-             pConfig.enable_admitance ?"True":"False", 
-             pConfig.verbose_mode ?"True":"False");
-
     aEnableAdmitance = pConfig.enable_admitance;
     aVerboseMode = pConfig.verbose_mode;
 }
 
+/**
+ * \brief Mets à jour les vitesses d'admittance dans le conteneur.
+ * \param[in] pAdmitanceVelocity La liste des vitesses
+ */
 void WMAdmitance::updateAdmitanceVelocity(const std::vector<double>& pAdmitanceVelocity)
 {
     size_t lIndex = 0;
@@ -166,6 +209,11 @@ void WMAdmitance::updateAdmitanceVelocity(const std::vector<double>& pAdmitanceV
     }
 }
 
+/**
+ * \brief Calcules les torques d'admittance avec les torques compensés
+ * \param[in] pCompensatedTorque La liste des torques compensés
+ * \return Retourne une liste des torques d'admitance
+ */
 std::vector<double> WMAdmitance::calculateAdmitanceTorque(const std::vector<double>& pCompensatedTorque)
 {
     size_t lIndex = 0;
@@ -178,6 +226,11 @@ std::vector<double> WMAdmitance::calculateAdmitanceTorque(const std::vector<doub
     return lAdmitanceTorque;
 }
 
+/**
+ * \brief Récupère l'effort sur un joint
+ * \param[in] pJointName Le nom du joint
+ * \return Retourne l'effort du joint
+ */
 double WMAdmitance::getEffortFromJoint(const std::string& pJointName) const
 {
     size_t lIndex = 0;

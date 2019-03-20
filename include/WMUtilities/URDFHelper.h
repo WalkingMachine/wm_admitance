@@ -13,6 +13,10 @@ namespace wm_admitance
 {
     namespace utilities
     {
+        /**
+         * \brief Une classe qui permet de récupérer les informations
+         *        contenus dans le fichier ou le paramètre de serveur URDF.
+         */
         class URDFHelper final
         {
         public:

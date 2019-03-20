@@ -1,5 +1,5 @@
 // \file WMAdmitance.h
-// \brief Declaration of gravity module.
+// \brief Déclaration de la classe WMAdmitance
 // \author Kevin Blackburn
 // \author Olivier Lavoie
 
@@ -27,10 +27,20 @@
 namespace wm_admitance
 {
     /**
-     * \brief Type of map of joint name by admitance velocity type
+     * \brief Type d'une conteneur de vitesse d'admittance avec le nom du joint
      */
     using AdmitanceVelocityMapType = std::map<std::string, double>;
 
+    /**
+     * \brief Une classe «singleton» qui effectue l'agorithme d'admittance
+     *
+     * \details Cette classe calcules les vitesses requises sur chaque joint donné
+     *          via le fichier de configuration (sara_admitance.yaml). Les autres joints
+     *          sont tout de même pris en considération dans le calcul.
+     *
+     * \note En ce moment, cette classe supporte seulement l'admitance sur un seul bras.
+     *       Cette fonctionnalité devra être ajoutée si nécessaire.
+     */
     class WMAdmitance final
     {
     public:
@@ -38,6 +48,10 @@ namespace wm_admitance
 
         double getAdmitanceVelocityFromJoint(const std::string& pJointName) const;
 
+        /**
+         * \brief Vérifie si le mode admittance est activé
+         * \return Retourne «true» si le mode admittance est activé, sinon «false»
+         */
         bool isAdmitanceEnabled() const noexcept { return aEnableAdmitance; }
 
         void process();
@@ -49,7 +63,7 @@ namespace wm_admitance
         WMAdmitance& operator=(const WMAdmitance&)= delete;
 
         void jointStateCallback(const sensor_msgs::JointState& pMsg);
-        void dynamicReconfigureCallback(sara_admitance::sara_admitanceConfig &pConfig, uint32_t pLevel);
+        void dynamicReconfigureCallback(sara_admitance::sara_admitanceConfig &pConfig);
 
         void updateAdmitanceVelocity(const std::vector<double>& pAdmitanceVelocity);
         std::vector<double> calculateAdmitanceTorque(const std::vector<double>& pCompensatedTorque);

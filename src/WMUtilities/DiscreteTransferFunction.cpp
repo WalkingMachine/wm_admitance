@@ -7,6 +7,14 @@
 
 using namespace wm_admitance::utilities;
 
+
+/**
+ * \brief Constructeur par défaut qui initialise les informations nécessaires
+ *        au calcul d'une fonction de transfert
+ * \param pNbTransferFunction Le nombre de functions de transfert
+ * \param[in] pTransferFunctionCoefficient LEs coefficients de la fonction de transfert
+ * \param pFilterOrder L'ordre du filtre
+ */
 DiscreteTransferFunction::DiscreteTransferFunction(int pNbTransferFunction,
                                                    const TransferFunctionCoefficient& pTransferFunctionCoefficient,
                                                    int pFilterOrder) :
@@ -17,6 +25,11 @@ DiscreteTransferFunction::DiscreteTransferFunction(int pNbTransferFunction,
     setZero();
 }
 
+/**
+ * \brief Mets à jour les nouvelles données après rétro-action de l'erreur
+ * \param pError L'erreur à considérer
+ * \return Les nouvelles données sous un format «Eigen»
+ */
 Eigen::VectorXd DiscreteTransferFunction::update(const Eigen::VectorXd& pError)
 {
     aErrorHistory.col(0) = pError;
@@ -26,12 +39,20 @@ Eigen::VectorXd DiscreteTransferFunction::update(const Eigen::VectorXd& pError)
     return aFilterResult;
 }
 
+/**
+ * \brief Mets à jour les nouvelles données après rétro-action de l'erreur
+ * \param pError L'erreur à considérer
+ * \return Les nouvelles données sous un format vectorielle
+ */
 std::vector<double> DiscreteTransferFunction::updateVector(const Eigen::VectorXd& pError)
 {
     Eigen::VectorXd lEigen = update(pError);
     return std::vector<double>(lEigen.data(), lEigen.data() + lEigen.rows() * lEigen.cols());
 }
 
+/**
+ * \brief Conserve les anciennes données après filtrage de la fonction de transfert
+ */
 void DiscreteTransferFunction::updateHistory()
 {
     Eigen::ArrayXXd lOutputHistory = Eigen::ArrayXXd::Zero(aNbTransferFunction, aFilterOrder);
@@ -44,6 +65,10 @@ void DiscreteTransferFunction::updateHistory()
     aErrorHistory = lErrorHistory;
 }
 
+/**
+ * \brief Effectue un filtrage de la fonction de transfert
+ * \return Retourne les données après filtrage
+ */
 Eigen::VectorXd DiscreteTransferFunction::filterXOrder() const
 {
     Eigen::VectorXd lNumeratorResult = (aTransferFunctionCoefficient.aNumeratorFactor * aErrorHistory).rowwise().sum();
@@ -51,6 +76,9 @@ Eigen::VectorXd DiscreteTransferFunction::filterXOrder() const
     return lNumeratorResult - lDenominatorResult;
 }
 
+/**
+ * \brief Initialise à zéro les structures internes
+ */
 void DiscreteTransferFunction::setZero() 
 {
     aFilterResult = Eigen::VectorXd::Zero(aNbTransferFunction);
