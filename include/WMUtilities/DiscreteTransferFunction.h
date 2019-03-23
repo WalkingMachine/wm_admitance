@@ -7,9 +7,12 @@
 #define DISCRETE_TRANSFER_FUNCTION_H
 
 #include "ControlTypes.h"
+#include "ConfigManager.h"
 
 #include <vector>
 #include <eigen3/Eigen/Eigen>
+
+#include <wm_admitance/FTParametersConfig.h>
 
 namespace wm_admitance
 {
@@ -19,10 +22,11 @@ namespace wm_admitance
          * \brief Une classe qui effectue un calcul d'asservissement
          *        avec une fonction de transert.
          */
-        class DiscreteTransferFunction final
+        class DiscreteTransferFunction : public ConfigManager<FTParametersConfig>
         {
 
         public:
+            DiscreteTransferFunction(const std::string& pConfigFilePath);
             DiscreteTransferFunction(int pNbTransferFunction, const TransferFunctionCoefficient& pTransferFunctionCoefficient,
                                      int pFilterOrder);
             ~DiscreteTransferFunction() noexcept = default;
@@ -33,8 +37,14 @@ namespace wm_admitance
             void setZero();
 
         private:
+            void onDynamicReconfigureChange(const FTParametersConfig& pConfig) override;
+            void writeConfigFile(const FTParametersConfig& pConfig) override;
+            void readConfigFile(FTParametersConfig& pConfig) override;
+
             Eigen::VectorXd filterXOrder() const;
             void updateHistory();
+
+            std::string aConfigFilePath;
 
             int aFilterOrder;
             int aNbTransferFunction;
@@ -42,7 +52,7 @@ namespace wm_admitance
             Eigen::ArrayXXd aOutputHistory;
             Eigen::ArrayXXd aErrorHistory;
 
-            const TransferFunctionCoefficient aTransferFunctionCoefficient;
+            TransferFunctionCoefficient aTransferFunctionCoefficient;
         };
     } // namespace utilities
 } // namespace wm_admitance

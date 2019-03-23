@@ -18,7 +18,7 @@
 #include <thread>
 
 #include <dynamic_reconfigure/server.h>
-#include <wm_admitance/sara_admitanceConfig.h>
+#include <wm_admitance/AdmitanceConfig.h>
 
 #include "WMGravityModel.h"
 
@@ -63,7 +63,7 @@ namespace wm_admitance
         WMAdmitance& operator=(const WMAdmitance&)= delete;
 
         void jointStateCallback(const sensor_msgs::JointState& pMsg);
-        void dynamicReconfigureCallback(sara_admitance::sara_admitanceConfig &pConfig);
+        void dynamicReconfigureCallback(AdmitanceConfig &pConfig);
 
         void updateAdmitanceVelocity(const std::vector<double>& pAdmitanceVelocity);
         std::vector<double> calculateAdmitanceTorque(const std::vector<double>& pCompensatedTorque);
@@ -77,7 +77,7 @@ namespace wm_admitance
         bool aVerboseMode{false};
         bool aFirstCheck{false};
 
-        dynamic_reconfigure::Server<sara_admitance::sara_admitanceConfig> aDynamicConfigServer;
+        dynamic_reconfigure::Server<AdmitanceConfig> aDynamicConfigServer;
 
         std::unique_ptr<utilities::DiscreteTransferFunction> aDiscreteTF;
 

@@ -19,7 +19,8 @@ find_package(catkin REQUIRED COMPONENTS
  find_package(cmake_modules REQUIRED)
 
 generate_dynamic_reconfigure_options(
-        config/sara_admitance.cfg
+        config/wm_admitance.cfg
+        config/FT_parameters.cfg
 )
 
 
@@ -52,7 +53,7 @@ add_library(${PROJECT_NAME}
 
 add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
 add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_gencfg)
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${Boost_LIBRARIES} yaml-cpp)
 
 
 # Install

@@ -7,6 +7,7 @@
 
 #include <ros/ros.h>
 #include <stdexcept>
+#include <boost/filesystem.hpp>
 
 using namespace wm_admitance;
 using namespace wm_admitance::utilities;
@@ -35,7 +36,8 @@ namespace std
  * \brief Constructeur par défaut qui initialize les configurations
  *         nécessaires pour l'admittance
  */
-WMAdmitance::WMAdmitance()
+WMAdmitance::WMAdmitance() :
+    aDynamicConfigServer(ros::NodeHandle(std::string("~/") + "Admittance"))
 {
     // Retrieve joint names configuration
     aAdmitanceNode.getParam("sara_admitance/joint_names", aJointNames);
@@ -55,21 +57,18 @@ WMAdmitance::WMAdmitance()
     // Create unique instance of gravity model
     aGravityModel = std::make_unique<WMGravityModel>(lLinkNames, 7);
 
-    // Create discrete Transfer function
-    TransferFunctionCoefficient lFunctionCoeff;
-    lFunctionCoeff.aNumeratorFactor = Eigen::ArrayXXd::Zero(aJointNames.size(), 2 + 1);
-    lFunctionCoeff.aDenominatorFactor = Eigen::ArrayXXd::Zero(aJointNames.size(), 2);
-
-    for (int i = 0; i < aJointNames.size(); i++)
+    // Create transfer function
+    char const* lTemp = getenv("HOME");
+    if (lTemp == NULL) 
     {
-        lFunctionCoeff.aDenominatorFactor.row(i) << -1.970052211604768, 0.970446261452074;
-        lFunctionCoeff.aNumeratorFactor.row(i)   << 0.004925623091321, 0.009851246182642, 0.004925623091321;
+        throw std::runtime_error("Couldn't retrieve environment variable HOME");
+    } 
+    else 
+    {
+        // Create transfer function
+        aDiscreteTF = std::make_unique<DiscreteTransferFunction>(
+            std::string(lTemp) + "/sara_ws/src/wm_admitance/config/filter_admitance.yaml");
     }
-
-    aDiscreteTF = std::make_unique<DiscreteTransferFunction>(
-            aJointNames.size(),
-            std::move(lFunctionCoeff),
-            2);
 
     // Initialize public admitance velocity
     for (const auto& lJointName : aJointNames)
@@ -189,10 +188,10 @@ void WMAdmitance::jointStateCallback(const sensor_msgs::JointState& pMsg)
  *
  * \note Les paramètres sont générés avec le fichier sara_admitance.cfg
  */
-void WMAdmitance::dynamicReconfigureCallback(sara_admitance::sara_admitanceConfig &pConfig)
+void WMAdmitance::dynamicReconfigureCallback(AdmitanceConfig &pConfig)
 {
-    aEnableAdmitance = pConfig.enable_admitance;
-    aVerboseMode = pConfig.verbose_mode;
+    aEnableAdmitance = pConfig.enableAdmitance;
+    aVerboseMode = pConfig.verboseMode;
 }
 
 /**

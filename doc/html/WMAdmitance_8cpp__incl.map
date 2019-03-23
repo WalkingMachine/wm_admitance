@@ -1,6 +1,7 @@
 <map id="WMAdmitance.cpp" name="WMAdmitance.cpp">
-<area shape="rect" id="node2" href="$WMAdmitance_8h.html" title="WMAdmitance.h" alt="" coords="578,80,696,107"/>
-<area shape="rect" id="node15" href="$WMGravityModel_8h.html" title="WMGravityModel.h" alt="" coords="1170,162,1304,189"/>
-<area shape="rect" id="node22" href="$DiscreteTransferFunction_8h.html" title="../WMUtilities/DiscreteTransfer\lFunction.h" alt="" coords="1440,155,1642,196"/>
-<area shape="rect" id="node16" href="$ControlTypes_8h.html" title="../WMUtilities/ControlTypes.h" alt="" coords="1454,244,1649,271"/>
+<area shape="rect" id="node2" href="$WMAdmitance_8h.html" title="WMAdmitance.h" alt="" coords="963,80,1082,107"/>
+<area shape="rect" id="node15" href="$WMGravityModel_8h.html" title="WMGravityModel.h" alt="" coords="706,162,841,189"/>
+<area shape="rect" id="node22" href="$DiscreteTransferFunction_8h.html" title="../WMUtilities/DiscreteTransfer\lFunction.h" alt="" coords="244,155,447,196"/>
+<area shape="rect" id="node16" href="$ControlTypes_8h.html" title="../WMUtilities/ControlTypes.h" alt="" coords="385,251,580,278"/>
+<area shape="rect" id="node23" href="$ConfigManager_8h.html" title="ConfigManager.h" alt="" coords="757,251,878,278"/>
 </map>
