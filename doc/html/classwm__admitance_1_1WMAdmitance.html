@@ -35,7 +35,7 @@
 <a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="classwm__admitance_1_1WMAdmitance-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">wm_admitance::WMAdmitance Class Reference<span class="mlabels"><span class="mlabel">final</span></span></div>  </div>
+<div class="title">wm_admitance::WMAdmitance Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -43,6 +43,14 @@
  <a href="classwm__admitance_1_1WMAdmitance.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for wm_admitance::WMAdmitance:</div>
+<div class="dyncontent">
+<div class="center"><img src="classwm__admitance_1_1WMAdmitance__inherit__graph.png" border="0" usemap="#wm__admitance_1_1WMAdmitance_inherit__map" alt="Inheritance graph"/></div>
+<map name="wm__admitance_1_1WMAdmitance_inherit__map" id="wm__admitance_1_1WMAdmitance_inherit__map">
+<area shape="rect" id="node2" href="classwm__admitance_1_1utilities_1_1ConfigManager.html" title="wm_admitance::utilities\l::ConfigManager\&lt; AdmitanceConfig \&gt;" alt="" coords="5,5,248,47"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -67,17 +75,20 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:a4f9a40e42cc2d7f8a453674b97c9d938"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1WMAdmitance.html#a4f9a40e42cc2d7f8a453674b97c9d938">calculateAdmitanceTorque</a> (const std::vector&lt; double &gt; &amp;pCompensatedTorque)</td></tr>
 <tr class="memdesc:a4f9a40e42cc2d7f8a453674b97c9d938"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcules les torques d'admittance avec les torques compensés.  <a href="#a4f9a40e42cc2d7f8a453674b97c9d938">More...</a><br /></td></tr>
 <tr class="separator:a4f9a40e42cc2d7f8a453674b97c9d938"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28e02301bc9003c33fc1d672cb906d21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1WMAdmitance.html#a28e02301bc9003c33fc1d672cb906d21">dynamicReconfigureCallback</a> (AdmitanceConfig &amp;pConfig)</td></tr>
-<tr class="memdesc:a28e02301bc9003c33fc1d672cb906d21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fonction de «callback» pour récupérer les changements de configuration dynamiquement au «runtime»  <a href="#a28e02301bc9003c33fc1d672cb906d21">More...</a><br /></td></tr>
-<tr class="separator:a28e02301bc9003c33fc1d672cb906d21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0984d490b2600e5fb0b8703c1bf037cb"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1WMAdmitance.html#a0984d490b2600e5fb0b8703c1bf037cb">getEffortFromJoint</a> (const std::string &amp;pJointName) const </td></tr>
 <tr class="memdesc:a0984d490b2600e5fb0b8703c1bf037cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Récupère l'effort sur un joint.  <a href="#a0984d490b2600e5fb0b8703c1bf037cb">More...</a><br /></td></tr>
 <tr class="separator:a0984d490b2600e5fb0b8703c1bf037cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3afcbae870e384c24d35c6d7d96f3166"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1WMAdmitance.html#a3afcbae870e384c24d35c6d7d96f3166">jointStateCallback</a> (const sensor_msgs::JointState &amp;pMsg)</td></tr>
 <tr class="memdesc:a3afcbae870e384c24d35c6d7d96f3166"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fonction de «callback» pour récupérer les torques courants sur les joints.  <a href="#a3afcbae870e384c24d35c6d7d96f3166">More...</a><br /></td></tr>
 <tr class="separator:a3afcbae870e384c24d35c6d7d96f3166"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7231a10e3b6f11b242a4e24bbf373b8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1WMAdmitance.html#a7231a10e3b6f11b242a4e24bbf373b8f">onDynamicReconfigureChange</a> (const AdmitanceConfig &amp;pConfig) override</td></tr>
+<tr class="memdesc:a7231a10e3b6f11b242a4e24bbf373b8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fonction de «callback» pour récupérer les changements de configuration dynamiquement au «runtime»  <a href="#a7231a10e3b6f11b242a4e24bbf373b8f">More...</a><br /></td></tr>
+<tr class="separator:a7231a10e3b6f11b242a4e24bbf373b8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58ab38282cb8d6ec2e5e11f74eae6d2b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwm__admitance_1_1WMAdmitance.html">WMAdmitance</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1WMAdmitance.html#a58ab38282cb8d6ec2e5e11f74eae6d2b">operator=</a> (const <a class="el" href="classwm__admitance_1_1WMAdmitance.html">WMAdmitance</a> &amp;)=delete</td></tr>
 <tr class="separator:a58ab38282cb8d6ec2e5e11f74eae6d2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a700fc117524bc242679e6eac2ad05096"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1WMAdmitance.html#a700fc117524bc242679e6eac2ad05096">readConfigFile</a> (AdmitanceConfig &amp;pConfig) override</td></tr>
+<tr class="memdesc:a700fc117524bc242679e6eac2ad05096"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fonction de «callback» pour lire les paramètres de configuration dynamiquement au «runtime»  <a href="#a700fc117524bc242679e6eac2ad05096">More...</a><br /></td></tr>
+<tr class="separator:a700fc117524bc242679e6eac2ad05096"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61538aa27af7d1c6a6b017a8a3c09d37"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1WMAdmitance.html#a61538aa27af7d1c6a6b017a8a3c09d37">updateAdmitanceVelocity</a> (const std::vector&lt; double &gt; &amp;pAdmitanceVelocity)</td></tr>
 <tr class="memdesc:a61538aa27af7d1c6a6b017a8a3c09d37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mets à jour les vitesses d'admittance dans le conteneur.  <a href="#a61538aa27af7d1c6a6b017a8a3c09d37">More...</a><br /></td></tr>
 <tr class="separator:a61538aa27af7d1c6a6b017a8a3c09d37"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -86,6 +97,9 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:afe44eeeadbfd7acf08f821f6d7043d9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d45ebd61acc781b1dd49a30c204cb7e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1WMAdmitance.html#a2d45ebd61acc781b1dd49a30c204cb7e">WMAdmitance</a> (const <a class="el" href="classwm__admitance_1_1WMAdmitance.html">WMAdmitance</a> &amp;)=delete</td></tr>
 <tr class="separator:a2d45ebd61acc781b1dd49a30c204cb7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26a9c12fc16d32c6ea2095db3454a90d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1WMAdmitance.html#a26a9c12fc16d32c6ea2095db3454a90d">writeConfigFile</a> (const AdmitanceConfig &amp;pConfig) override</td></tr>
+<tr class="memdesc:a26a9c12fc16d32c6ea2095db3454a90d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fonction de «callback» pour sauvegarder les changements de configuration dynamiquement au «runtime»  <a href="#a26a9c12fc16d32c6ea2095db3454a90d">More...</a><br /></td></tr>
+<tr class="separator:a26a9c12fc16d32c6ea2095db3454a90d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4aebbc9fe0efd9a2ba924a842a6e9f88"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1WMAdmitance.html#a4aebbc9fe0efd9a2ba924a842a6e9f88">~WMAdmitance</a> () noexcept=default</td></tr>
 <tr class="separator:a4aebbc9fe0efd9a2ba924a842a6e9f88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -97,8 +111,6 @@ Private Attributes</h2></td></tr>
 <tr class="separator:ad2bb2ead787ed7c68389ea70dbbc53e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a803cf9c45c8d8c6662e4265eddf20e84"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classwm__admitance_1_1utilities_1_1DiscreteTransferFunction.html">utilities::DiscreteTransferFunction</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1WMAdmitance.html#a803cf9c45c8d8c6662e4265eddf20e84">aDiscreteTF</a></td></tr>
 <tr class="separator:a803cf9c45c8d8c6662e4265eddf20e84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bb0acff43a1b9f6ffee220268ef6c60"><td class="memItemLeft" align="right" valign="top">dynamic_reconfigure::Server&lt; AdmitanceConfig &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1WMAdmitance.html#a3bb0acff43a1b9f6ffee220268ef6c60">aDynamicConfigServer</a></td></tr>
-<tr class="separator:a3bb0acff43a1b9f6ffee220268ef6c60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f89d9a7b39d44e4d2aa18488f9e81c2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1WMAdmitance.html#a3f89d9a7b39d44e4d2aa18488f9e81c2">aEnableAdmitance</a> {false}</td></tr>
 <tr class="separator:a3f89d9a7b39d44e4d2aa18488f9e81c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ae652f7bcd3685712b9d9876f8d1f3a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1WMAdmitance.html#a5ae652f7bcd3685712b9d9876f8d1f3a">aFirstCheck</a> {false}</td></tr>
@@ -120,13 +132,26 @@ Static Private Attributes</h2></td></tr>
 <tr class="separator:a2a297985aee231a7ecf23f9fdab1bc53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b01bbd008b29979934ae508dd106b7c"><td class="memItemLeft" align="right" valign="top">static std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1WMAdmitance.html#a6b01bbd008b29979934ae508dd106b7c">aMutex</a></td></tr>
 <tr class="separator:a6b01bbd008b29979934ae508dd106b7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_methods_classwm__admitance_1_1utilities_1_1ConfigManager"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classwm__admitance_1_1utilities_1_1ConfigManager')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classwm__admitance_1_1utilities_1_1ConfigManager.html">wm_admitance::utilities::ConfigManager&lt; AdmitanceConfig &gt;</a></td></tr>
+<tr class="memitem:a7a0946365761c84eaf5c0729683f0679 inherit pro_methods_classwm__admitance_1_1utilities_1_1ConfigManager"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1utilities_1_1ConfigManager.html#a7a0946365761c84eaf5c0729683f0679">ConfigManager</a> (const std::string &amp;pManagerName)</td></tr>
+<tr class="memdesc:a7a0946365761c84eaf5c0729683f0679 inherit pro_methods_classwm__admitance_1_1utilities_1_1ConfigManager"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consutrcteur par défaut.  <a href="#a7a0946365761c84eaf5c0729683f0679">More...</a><br /></td></tr>
+<tr class="separator:a7a0946365761c84eaf5c0729683f0679 inherit pro_methods_classwm__admitance_1_1utilities_1_1ConfigManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad082d77267295584c160d77cb5b075d9 inherit pro_methods_classwm__admitance_1_1utilities_1_1ConfigManager"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1utilities_1_1ConfigManager.html#ad082d77267295584c160d77cb5b075d9">getManagerName</a> ()</td></tr>
+<tr class="memdesc:ad082d77267295584c160d77cb5b075d9 inherit pro_methods_classwm__admitance_1_1utilities_1_1ConfigManager"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retourne le nom du gestionnaire de configuration.  <a href="#ad082d77267295584c160d77cb5b075d9">More...</a><br /></td></tr>
+<tr class="separator:ad082d77267295584c160d77cb5b075d9 inherit pro_methods_classwm__admitance_1_1utilities_1_1ConfigManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4eed3469439ccc02e2eaad4ecd2f98b4 inherit pro_methods_classwm__admitance_1_1utilities_1_1ConfigManager"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwm__admitance_1_1utilities_1_1ConfigManager.html#a4eed3469439ccc02e2eaad4ecd2f98b4">init</a> ()</td></tr>
+<tr class="memdesc:a4eed3469439ccc02e2eaad4ecd2f98b4 inherit pro_methods_classwm__admitance_1_1utilities_1_1ConfigManager"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise le server de reconfiguration.  <a href="#a4eed3469439ccc02e2eaad4ecd2f98b4">More...</a><br /></td></tr>
+<tr class="separator:a4eed3469439ccc02e2eaad4ecd2f98b4 inherit pro_methods_classwm__admitance_1_1utilities_1_1ConfigManager"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Une classe «singleton» qui effectue l'agorithme d'admittance. </p>
 <p>Cette classe calcules les vitesses requises sur chaque joint donné via le fichier de configuration (sara_admitance.yaml). Les autres joints sont tout de même pris en considération dans le calcul.</p>
 <dl class="section note"><dt>Note</dt><dd>En ce moment, cette classe supporte seulement l'admitance sur un seul bras. Cette fonctionnalité devra être ajoutée si nécessaire. </dd></dl>
 
-<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00044">44</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00045">45</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="afe44eeeadbfd7acf08f821f6d7043d9f"></a>
 <div class="memitem">
@@ -234,42 +259,7 @@ Static Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Retourne une liste des torques d'admitance </dd></dl>
 
-<p>Definition at line <a class="el" href="WMAdmitance_8cpp_source.html#l00216">216</a> of file <a class="el" href="WMAdmitance_8cpp_source.html">WMAdmitance.cpp</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a28e02301bc9003c33fc1d672cb906d21"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void WMAdmitance::dynamicReconfigureCallback </td>
-          <td>(</td>
-          <td class="paramtype">AdmitanceConfig &amp;&#160;</td>
-          <td class="paramname"><em>pConfig</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Fonction de «callback» pour récupérer les changements de configuration dynamiquement au «runtime» </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">pConfig</td><td>Instance contenant les valeurs de chaque configuration.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section note"><dt>Note</dt><dd>Les paramètres sont générés avec le fichier sara_admitance.cfg </dd></dl>
-
-<p>Definition at line <a class="el" href="WMAdmitance_8cpp_source.html#l00191">191</a> of file <a class="el" href="WMAdmitance_8cpp_source.html">WMAdmitance.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8cpp_source.html#l00242">242</a> of file <a class="el" href="WMAdmitance_8cpp_source.html">WMAdmitance.cpp</a>.</p>
 
 </div>
 </div>
@@ -331,7 +321,7 @@ Static Private Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Retourne l'effort du joint </dd></dl>
 
-<p>Definition at line <a class="el" href="WMAdmitance_8cpp_source.html#l00233">233</a> of file <a class="el" href="WMAdmitance_8cpp_source.html">WMAdmitance.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8cpp_source.html#l00259">259</a> of file <a class="el" href="WMAdmitance_8cpp_source.html">WMAdmitance.cpp</a>.</p>
 
 </div>
 </div>
@@ -387,7 +377,7 @@ Static Private Attributes</h2></td></tr>
 <p>Vérifie si le mode admittance est activé </p>
 <dl class="section return"><dt>Returns</dt><dd>Retourne «true» si le mode admittance est activé, sinon «false» </dd></dl>
 
-<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00055">55</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00056">56</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
 
 </div>
 </div>
@@ -428,7 +418,44 @@ Static Private Attributes</h2></td></tr>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Cette fonction est enregistré via ROS avec le message «joint_states» </dd></dl>
 
-<p>Definition at line <a class="el" href="WMAdmitance_8cpp_source.html#l00154">154</a> of file <a class="el" href="WMAdmitance_8cpp_source.html">WMAdmitance.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8cpp_source.html#l00193">193</a> of file <a class="el" href="WMAdmitance_8cpp_source.html">WMAdmitance.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a7231a10e3b6f11b242a4e24bbf373b8f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WMAdmitance::onDynamicReconfigureChange </td>
+          <td>(</td>
+          <td class="paramtype">const AdmitanceConfig &amp;&#160;</td>
+          <td class="paramname"><em>pConfig</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">private</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fonction de «callback» pour récupérer les changements de configuration dynamiquement au «runtime» </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pConfig</td><td>Instance contenant les valeurs de chaque configuration.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Les paramètres sont générés avec le fichier wm_admitance.cfg </dd></dl>
+
+<p>Implements <a class="el" href="classwm__admitance_1_1utilities_1_1ConfigManager.html#aeab5fefbf3da087a18923b8008cd90e8">wm_admitance::utilities::ConfigManager&lt; AdmitanceConfig &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="WMAdmitance_8cpp_source.html#l00152">152</a> of file <a class="el" href="WMAdmitance_8cpp_source.html">WMAdmitance.cpp</a>.</p>
 
 </div>
 </div>
@@ -476,6 +503,43 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a700fc117524bc242679e6eac2ad05096"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WMAdmitance::readConfigFile </td>
+          <td>(</td>
+          <td class="paramtype">AdmitanceConfig &amp;&#160;</td>
+          <td class="paramname"><em>pConfig</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">private</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fonction de «callback» pour lire les paramètres de configuration dynamiquement au «runtime» </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pConfig</td><td>Instance contenant les valeurs de chaque configuration.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Non utilisé, car les parmaêtres ne retrouvent pas dans un fichier yaml. </dd></dl>
+
+<p>Implements <a class="el" href="classwm__admitance_1_1utilities_1_1ConfigManager.html#af4620edcbbb3cd3f6056a0af515c0d51">wm_admitance::utilities::ConfigManager&lt; AdmitanceConfig &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="WMAdmitance_8cpp_source.html#l00178">178</a> of file <a class="el" href="WMAdmitance_8cpp_source.html">WMAdmitance.cpp</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="a61538aa27af7d1c6a6b017a8a3c09d37"></a>
 <div class="memitem">
 <div class="memproto">
@@ -506,7 +570,44 @@ Static Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="WMAdmitance_8cpp_source.html#l00201">201</a> of file <a class="el" href="WMAdmitance_8cpp_source.html">WMAdmitance.cpp</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8cpp_source.html#l00227">227</a> of file <a class="el" href="WMAdmitance_8cpp_source.html">WMAdmitance.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a26a9c12fc16d32c6ea2095db3454a90d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void WMAdmitance::writeConfigFile </td>
+          <td>(</td>
+          <td class="paramtype">const AdmitanceConfig &amp;&#160;</td>
+          <td class="paramname"><em>pConfig</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">private</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fonction de «callback» pour sauvegarder les changements de configuration dynamiquement au «runtime» </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pConfig</td><td>Instance contenant les valeurs de chaque configuration.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>Non utilisé, car les parmaêtres ne retrouvent pas dans un fichier yaml. </dd></dl>
+
+<p>Implements <a class="el" href="classwm__admitance_1_1utilities_1_1ConfigManager.html#a90be84f6bdc43aec51d566285e8254e0">wm_admitance::utilities::ConfigManager&lt; AdmitanceConfig &gt;</a>.</p>
+
+<p>Definition at line <a class="el" href="WMAdmitance_8cpp_source.html#l00165">165</a> of file <a class="el" href="WMAdmitance_8cpp_source.html">WMAdmitance.cpp</a>.</p>
 
 </div>
 </div>
@@ -529,7 +630,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00086">86</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00088">88</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
 
 </div>
 </div>
@@ -551,7 +652,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00093">93</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00095">95</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
 
 </div>
 </div>
@@ -573,29 +674,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00082">82</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a3bb0acff43a1b9f6ffee220268ef6c60"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">dynamic_reconfigure::Server&lt;AdmitanceConfig&gt; wm_admitance::WMAdmitance::aDynamicConfigServer</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00080">80</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00084">84</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
 
 </div>
 </div>
@@ -617,7 +696,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00076">76</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00080">80</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
 
 </div>
 </div>
@@ -639,7 +718,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00078">78</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00082">82</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
 
 </div>
 </div>
@@ -661,7 +740,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00087">87</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00089">89</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
 
 </div>
 </div>
@@ -683,7 +762,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00073">73</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00077">77</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
 
 </div>
 </div>
@@ -705,7 +784,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00091">91</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00093">93</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
 
 </div>
 </div>
@@ -727,7 +806,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00084">84</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00086">86</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
 
 </div>
 </div>
@@ -749,7 +828,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00089">89</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00091">91</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
 
 </div>
 </div>
@@ -771,7 +850,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00074">74</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00078">78</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
 
 </div>
 </div>
@@ -793,7 +872,7 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00077">77</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
+<p>Definition at line <a class="el" href="WMAdmitance_8h_source.html#l00081">81</a> of file <a class="el" href="WMAdmitance_8h_source.html">WMAdmitance.h</a>.</p>
 
 </div>
 </div>
@@ -807,7 +886,7 @@ Static Private Attributes</h2></td></tr>
 <hr size="1"><div style="align: right;">
 <a href="http://wiki.ros.org/wm_admitance">wm_admitance</a><br />
 Author(s): Kevin Blackburn <kevin.blackburn.1@ens.etsmtl.ca></br />
-<small>autogenerated on Sat Mar 23 2019 16:39:22</small>
+<small>autogenerated on Sat Mar 23 2019 16:54:45</small>
 </div>
 </body>
 </html>

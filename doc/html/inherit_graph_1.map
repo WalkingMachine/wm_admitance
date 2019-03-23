@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classwm__admitance_1_1utilities_1_1ConfigManager.html" title="Classe qui permet de gérer un fichier de reconfiguration dynamique. " alt="" coords="5,5,257,61"/>
+<area shape="rect" id="node1" href="$classwm__admitance_1_1utilities_1_1ConfigManager.html" title="wm_admitance::utilities\l::ConfigManager\&lt; AdmitanceConfig \&gt;" alt="" coords="5,5,248,47"/>
+<area shape="rect" id="node2" href="$classwm__admitance_1_1WMAdmitance.html" title="Une classe «singleton» qui effectue l&#39;agorithme d&#39;admittance. " alt="" coords="296,13,500,39"/>
 </map>

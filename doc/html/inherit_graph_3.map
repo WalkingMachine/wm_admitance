@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structwm__admitance_1_1utilities_1_1RobotData.html" title="Une structure contenant les informations utiles pour un robot. " alt="" coords="5,5,164,47"/>
+<area shape="rect" id="node1" href="$classwm__admitance_1_1utilities_1_1ConfigManager.html" title="wm_admitance::utilities\l::ConfigManager\&lt; FTParameters\lConfig \&gt;" alt="" coords="5,5,219,61"/>
+<area shape="rect" id="node2" href="$classwm__admitance_1_1utilities_1_1DiscreteTransferFunction.html" title="Une classe qui effectue un calcul d&#39;asservissement avec une fonction de transert. ..." alt="" coords="267,13,444,54"/>
 </map>

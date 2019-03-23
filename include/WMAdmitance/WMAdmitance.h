@@ -23,6 +23,7 @@
 #include "WMGravityModel.h"
 
 #include "../WMUtilities/DiscreteTransferFunction.h"
+#include "../WMUtilities/ConfigManager.h"
 
 namespace wm_admitance
 {
@@ -41,7 +42,7 @@ namespace wm_admitance
      * \note En ce moment, cette classe supporte seulement l'admitance sur un seul bras.
      *       Cette fonctionnalité devra être ajoutée si nécessaire.
      */
-    class WMAdmitance final
+    class WMAdmitance : public utilities::ConfigManager<AdmitanceConfig>
     {
     public:
         static WMAdmitance* getInstance();
@@ -62,8 +63,11 @@ namespace wm_admitance
         WMAdmitance(const WMAdmitance&)= delete;
         WMAdmitance& operator=(const WMAdmitance&)= delete;
 
+        void onDynamicReconfigureChange(const AdmitanceConfig& pConfig) override;
+        void writeConfigFile(const AdmitanceConfig& pConfig) override;
+        void readConfigFile(AdmitanceConfig& pConfig) override;
+
         void jointStateCallback(const sensor_msgs::JointState& pMsg);
-        void dynamicReconfigureCallback(AdmitanceConfig &pConfig);
 
         void updateAdmitanceVelocity(const std::vector<double>& pAdmitanceVelocity);
         std::vector<double> calculateAdmitanceTorque(const std::vector<double>& pCompensatedTorque);
@@ -76,8 +80,6 @@ namespace wm_admitance
         bool aEnableAdmitance{false};
         bool aVerboseMode{false};
         bool aFirstCheck{false};
-
-        dynamic_reconfigure::Server<AdmitanceConfig> aDynamicConfigServer;
 
         std::unique_ptr<utilities::DiscreteTransferFunction> aDiscreteTF;
 

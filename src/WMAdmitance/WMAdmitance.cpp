@@ -37,13 +37,13 @@ namespace std
  *         nécessaires pour l'admittance
  */
 WMAdmitance::WMAdmitance() :
-    aDynamicConfigServer(ros::NodeHandle(std::string("~/") + "Admittance"))
+    ConfigManager("Admittance")
 {
+    // Start the reconfigure server
+    init();
+
     // Retrieve joint names configuration
     aAdmitanceNode.getParam("sara_admitance/joint_names", aJointNames);
-
-    // Set callback for dynamic reconfiguration
-    aDynamicConfigServer.setCallback(boost::bind(&WMAdmitance::dynamicReconfigureCallback, this, _1));
 
     // Retrieve link names for each joint
     std::vector<std::string> lLinkNames;
@@ -143,6 +143,45 @@ void WMAdmitance::process()
 }
 
 /**
+ * \brief Fonction de «callback» pour récupérer les changements de configuration
+ *        dynamiquement au «runtime»
+ * \param[in] pConfig Instance contenant les valeurs de chaque configuration.
+ *
+ * \note Les paramètres sont générés avec le fichier wm_admitance.cfg
+ */
+void WMAdmitance::onDynamicReconfigureChange(const AdmitanceConfig& pConfig)
+{
+    aEnableAdmitance = pConfig.enableAdmitance;
+    aVerboseMode = pConfig.verboseMode;
+}
+
+/**
+ * \brief Fonction de «callback» pour sauvegarder les changements de configuration
+ *        dynamiquement au «runtime»
+ * \param[in] pConfig Instance contenant les valeurs de chaque configuration.
+ *
+ * \note Non utilisé, car les parmaêtres ne retrouvent pas dans un fichier yaml.
+ */
+void WMAdmitance::writeConfigFile(const AdmitanceConfig& pConfig)
+{
+    (void) pConfig;
+    // No logic body
+}
+
+/**
+ * \brief Fonction de «callback» pour lire les paramètres de configuration
+ *        dynamiquement au «runtime»
+ * \param[in] pConfig Instance contenant les valeurs de chaque configuration.
+ *
+ * \note Non utilisé, car les parmaêtres ne retrouvent pas dans un fichier yaml.
+ */
+void WMAdmitance::readConfigFile(AdmitanceConfig& pConfig)
+{
+    (void) pConfig;
+    // No logic body
+}
+
+/**
  * \brief Fonction de «callback» pour récupérer les torques courants sur les joints
  * \param[in] pMsg Instance contenant les informations sur les joints
  *
@@ -179,19 +218,6 @@ void WMAdmitance::jointStateCallback(const sensor_msgs::JointState& pMsg)
     {
         aJointState = pMsg;
     }
-}
-
-/**
- * \brief Fonction de «callback» pour récupérer les changements de configuration
- *        dynamiquement au «runtime»
- * \param[in] pConfig Instance contenant les valeurs de chaque configuration.
- *
- * \note Les paramètres sont générés avec le fichier sara_admitance.cfg
- */
-void WMAdmitance::dynamicReconfigureCallback(AdmitanceConfig &pConfig)
-{
-    aEnableAdmitance = pConfig.enableAdmitance;
-    aVerboseMode = pConfig.verboseMode;
 }
 
 /**

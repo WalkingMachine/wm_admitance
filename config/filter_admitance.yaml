@@ -1,40 +1,35 @@
-
 # Ces paramètres ne peuvent pas être modifiés dynamiquement
 filter_order: 2
 nb_functionTransfer: 5
 
 # Ces paramètres peuvent être modifiés dynamiquement
 FunctionTransfer1:
-    numerator_1: 6.4036e-6
-    numerator_2: 1.2807e-5
-    numerator_3: 6.4036e-6
+    numerator_1: 6.4036e-06
+    numerator_2: 1.2807e-05
+    numerator_3: 6.4036e-06
     denominateur_2: -1.9702
     denominateur_3: 0.9704
-
 FunctionTransfer2:
-    numerator_1: 6.4036e-6
-    numerator_2: 1.2807e-5
-    numerator_3: 6.4036e-6
+    numerator_1: 6.4036e-06
+    numerator_2: 1.2807e-05
+    numerator_3: 6.4036e-06
     denominateur_2: -1.9702
     denominateur_3: 0.9704
-
 FunctionTransfer3:
-    numerator_1: 6.4036e-6
-    numerator_2: 1.2807e-5
-    numerator_3: 6.4036e-6
+    numerator_1: 6.4036e-06
+    numerator_2: 1.2807e-05
+    numerator_3: 6.4036e-06
     denominateur_2: -1.9702
     denominateur_3: 0.9704
-
 FunctionTransfer4:
-    numerator_1: 6.4036e-6
-    numerator_2: 1.2807e-5
-    numerator_3: 6.4036e-6
+    numerator_1: 6.4036e-06
+    numerator_2: 1.2807e-05
+    numerator_3: 6.4036e-06
     denominateur_2: -1.9702
     denominateur_3: 0.9704
-
 FunctionTransfer5:
-    numerator_1: 6.4036e-6
-    numerator_2: 1.2807e-5
-    numerator_3: 6.4036e-6
+    numerator_1: 6.4036e-06
+    numerator_2: 1.2807e-05
+    numerator_3: 6.4036e-06
     denominateur_2: -1.9702
     denominateur_3: 0.9704
