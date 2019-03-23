@@ -72,9 +72,15 @@ Par défaut, le mode admittance et le mode d'afficahge (debug) sont désactivés
 ```sh
 rosrun rqt_reconfigure rqt_reconfigure
 ```
-
-Finalement, il est possible de regénérer la documentation DOxygen en utilisant cette commande:
+ou
 ```sh
- rosdoc_lite wm_admittance
+rqt
 ```
-Une documentation a déjà été générée dans le dossier **/doc**.
+
+Les coefficients de la fonction de transfert peuvent aussi être modifiés par la reconfiguration dynamique. À la modification, les changements seront sauvegardés dans le fichier de configuration filter_admittance.yaml.
+
+Finalement, il est possible de regénérer la documentation DOxygen en utilisant cette commande en se situant dans la racine du répertoire wm_admittance:
+```sh
+ rosdoc_lite .
+```
+Une documentation a déjà été générée dans le dossier **/doc** au préalable.
