@@ -1,7 +1,0 @@
-<library path="lib/libwm_admitance">
-    <class name="wm_admitance/WMAdmitance" type="wm_admitance::WMAdmitance">
-        <description>
-            Walking Machine admitance algorithm class.
-        </description>
-    </class>
-</library>

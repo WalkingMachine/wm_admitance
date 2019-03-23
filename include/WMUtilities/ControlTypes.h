@@ -11,7 +11,7 @@
 #include <tf/LinearMath/Vector3.h>
 #include <vector>
 
-namespace wm_admitance
+namespace wm_admittance
 {
     namespace utilities
     {
@@ -37,6 +37,6 @@ namespace wm_admitance
         };
 
     } // namespace utilities
-} // namespace wm_admitance
+} // namespace wm_admittance
 
 #endif // CONTROL_TYPE_H

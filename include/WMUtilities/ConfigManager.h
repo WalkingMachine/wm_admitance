@@ -13,7 +13,7 @@
 #include <dynamic_reconfigure/server.h>
 #include <yaml-cpp/yaml.h>
 
-namespace wm_admitance
+namespace wm_admittance
 {
     namespace utilities
     {
@@ -115,6 +115,6 @@ namespace wm_admitance
             dynamicReconfigureCallback(aCurrentConfig, 0);
         }
     } // namespace utilities
-} // namespace wm_admitance
+} // namespace wm_admittance
 
 #endif //CONFIG_MANAGER_H

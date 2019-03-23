@@ -7,8 +7,8 @@
 #include "WMGravityModel.h"
 #include "ControlTypes.h"
 
-using namespace wm_admitance::utilities;
-using namespace wm_admitance;
+using namespace wm_admittance::utilities;
+using namespace wm_admittance;
 
 class GravityModel_Unit_Test : public testing::Test
 {

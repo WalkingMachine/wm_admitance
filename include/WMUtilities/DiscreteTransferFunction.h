@@ -12,9 +12,9 @@
 #include <vector>
 #include <eigen3/Eigen/Eigen>
 
-#include <wm_admitance/FTParametersConfig.h>
+#include <wm_admittance/FTParametersConfig.h>
 
-namespace wm_admitance
+namespace wm_admittance
 {
     namespace utilities
     {
@@ -55,6 +55,6 @@ namespace wm_admitance
             TransferFunctionCoefficient aTransferFunctionCoefficient;
         };
     } // namespace utilities
-} // namespace wm_admitance
+} // namespace wm_admittance
 
 #endif // DISCRETE_TRANSFER_FUNCTION_H

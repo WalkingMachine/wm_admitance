@@ -1,19 +1,19 @@
-// \file WMAdmitance.cpp
-// \brief Définition de la classe WMAdmitance
+// \file WMAdmittance.cpp
+// \brief Définition de la classe WMAdmittance
 // \author Kevin Blackburn
 // \author Olivier Lavoie
 
-#include "WMAdmitance.h"
+#include "WMAdmittance.h"
 
 #include <ros/ros.h>
+#include <ros/package.h>
 #include <stdexcept>
-#include <boost/filesystem.hpp>
 
-using namespace wm_admitance;
-using namespace wm_admitance::utilities;
+using namespace wm_admittance;
+using namespace wm_admittance::utilities;
 
-std::atomic<WMAdmitance*> WMAdmitance::aInstance;
-std::mutex WMAdmitance::aMutex;
+std::atomic<WMAdmittance*> WMAdmittance::aInstance;
+std::mutex WMAdmittance::aMutex;
 
 namespace std
 {
@@ -32,25 +32,30 @@ namespace std
     }
 }
 
+namespace
+{
+    const std::string gPackageName("wm_admittance");
+}
+
 /**
  * \brief Constructeur par défaut qui initialize les configurations
  *         nécessaires pour l'admittance
  */
-WMAdmitance::WMAdmitance() :
+WMAdmittance::WMAdmittance() :
     ConfigManager("Admittance")
 {
     // Start the reconfigure server
     init();
-
+    
     // Retrieve joint names configuration
-    aAdmitanceNode.getParam("sara_admitance/joint_names", aJointNames);
+    aAdmittanceNode.getParam("wm_admittance/joint_names", aJointNames);
 
     // Retrieve link names for each joint
     std::vector<std::string> lLinkNames;
     for (const std::string& lJointName : aJointNames)
     {
         std::vector<std::string> lLinkName;
-        aAdmitanceNode.getParam("sara_admitance/" + lJointName, lLinkName);
+        aAdmittanceNode.getParam("wm_admittance/" + lJointName, lLinkName);
         lLinkNames.emplace_back(std::move(lLinkName[0]));
     }
 
@@ -58,42 +63,33 @@ WMAdmitance::WMAdmitance() :
     aGravityModel = std::make_unique<WMGravityModel>(lLinkNames, 7);
 
     // Create transfer function
-    char const* lTemp = getenv("HOME");
-    if (lTemp == NULL) 
-    {
-        throw std::runtime_error("Couldn't retrieve environment variable HOME");
-    } 
-    else 
-    {
-        // Create transfer function
-        aDiscreteTF = std::make_unique<DiscreteTransferFunction>(
-            std::string(lTemp) + "/sara_ws/src/wm_admitance/config/filter_admitance.yaml");
-    }
+    aDiscreteTF = std::make_unique<DiscreteTransferFunction>(
+       ros::package::getPath(gPackageName) + "/config/filter_admittance.yaml");
 
-    // Initialize public admitance velocity
+    // Initialize public admittance velocity
     for (const auto& lJointName : aJointNames)
     {
-        aAdmitanceVelocityMap.emplace(lJointName, 0.0f);
+        aAdmittanceVelocityMap.emplace(lJointName, 0.0f);
     }
 
     // Subscribe to the joint_state to obtain current efforts applied on joints
-    aJointStateSub = aAdmitanceNode.subscribe("joint_states", 1, &WMAdmitance::jointStateCallback, this);
+    aJointStateSub = aAdmittanceNode.subscribe("joint_states", 1, &WMAdmittance::jointStateCallback, this);
 }
 
 /**
- * \brief Récupère l'instance unique «singleton» de la classe WMAdmitance.
+ * \brief Récupère l'instance unique «singleton» de la classe WMAdmittance.
  * \return Retourne l'instance unique
  */
-WMAdmitance* WMAdmitance::getInstance()
+WMAdmittance* WMAdmittance::getInstance()
 {
-    WMAdmitance* lInstance = aInstance.load(std::memory_order_acquire);
+    WMAdmittance* lInstance = aInstance.load(std::memory_order_acquire);
     if (!lInstance)
     {
         std::lock_guard<std::mutex> lLock(aMutex);
         lInstance = aInstance.load(std::memory_order_relaxed);
         if(!lInstance)
         {
-            lInstance = new WMAdmitance();
+            lInstance = new WMAdmittance();
             aInstance.store(lInstance, std::memory_order_release);
         }
     }   
@@ -101,15 +97,15 @@ WMAdmitance* WMAdmitance::getInstance()
 }
 
 /**
- * \brief Récupère la vitesse calculée par l'admitance d'un joint.
+ * \brief Récupère la vitesse calculée par l'admittance d'un joint.
  * \param[in] pJointName Le nom du joint
- * \return Retourne la vitesse de l'admitance
+ * \return Retourne la vitesse de l'admittance
  */
-double WMAdmitance::getAdmitanceVelocityFromJoint(const std::string& pJointName) const
+double WMAdmittance::getAdmittanceVelocityFromJoint(const std::string& pJointName) const
 {
     double lVelocity = 0.0f;
-    const auto& lIter = aAdmitanceVelocityMap.find(pJointName);
-    if (lIter != aAdmitanceVelocityMap.end())
+    const auto& lIter = aAdmittanceVelocityMap.find(pJointName);
+    if (lIter != aAdmittanceVelocityMap.end())
     {
         lVelocity = lIter->second;
     }
@@ -117,26 +113,26 @@ double WMAdmitance::getAdmitanceVelocityFromJoint(const std::string& pJointName)
 }
 
 /**
- * \brief Fonction principale qui doit être appelée pour calculer l'admitance.
+ * \brief Fonction principale qui doit être appelée pour calculer l'admittance.
  *
  * \note Cette fonction doit être appelée en boucle avec l'horloge principale de ROS
  *       pour une meilleure synchronisation.
  */
-void WMAdmitance::process()
+void WMAdmittance::process()
 {
-    if (isAdmitanceEnabled())
+    if (isAdmittanceEnabled())
     {
-        std::vector<double> lAdmitanceTorque =
-            calculateAdmitanceTorque(aGravityModel->process());
+        std::vector<double> lAdmittanceTorque =
+            calculateAdmittanceTorque(aGravityModel->process());
 
-        updateAdmitanceVelocity(
-            aDiscreteTF->updateVector(Eigen::Map<Eigen::VectorXd>(lAdmitanceTorque.data(), lAdmitanceTorque.size())));
+        updateAdmittanceVelocity(
+            aDiscreteTF->updateVector(Eigen::Map<Eigen::VectorXd>(lAdmittanceTorque.data(), lAdmittanceTorque.size())));
 
         if (aVerboseMode)
         {
             for (const auto& lJointName : aJointNames)
             {
-                ROS_INFO("Velocity of %s: %lf", lJointName.c_str(), getAdmitanceVelocityFromJoint(lJointName));
+                ROS_INFO("Velocity of %s: %lf", lJointName.c_str(), getAdmittanceVelocityFromJoint(lJointName));
             }
         }
     }
@@ -147,11 +143,11 @@ void WMAdmitance::process()
  *        dynamiquement au «runtime»
  * \param[in] pConfig Instance contenant les valeurs de chaque configuration.
  *
- * \note Les paramètres sont générés avec le fichier wm_admitance.cfg
+ * \note Les paramètres sont générés avec le fichier wm_admittance.cfg
  */
-void WMAdmitance::onDynamicReconfigureChange(const AdmitanceConfig& pConfig)
+void WMAdmittance::onDynamicReconfigureChange(const AdmittanceConfig& pConfig)
 {
-    aEnableAdmitance = pConfig.enableAdmitance;
+    aEnableAdmittance = pConfig.enableAdmittance;
     aVerboseMode = pConfig.verboseMode;
 }
 
@@ -162,7 +158,7 @@ void WMAdmitance::onDynamicReconfigureChange(const AdmitanceConfig& pConfig)
  *
  * \note Non utilisé, car les parmaêtres ne retrouvent pas dans un fichier yaml.
  */
-void WMAdmitance::writeConfigFile(const AdmitanceConfig& pConfig)
+void WMAdmittance::writeConfigFile(const AdmittanceConfig& pConfig)
 {
     (void) pConfig;
     // No logic body
@@ -175,7 +171,7 @@ void WMAdmitance::writeConfigFile(const AdmitanceConfig& pConfig)
  *
  * \note Non utilisé, car les parmaêtres ne retrouvent pas dans un fichier yaml.
  */
-void WMAdmitance::readConfigFile(AdmitanceConfig& pConfig)
+void WMAdmittance::readConfigFile(AdmittanceConfig& pConfig)
 {
     (void) pConfig;
     // No logic body
@@ -190,12 +186,12 @@ void WMAdmitance::readConfigFile(AdmitanceConfig& pConfig)
  *
  * \note Cette fonction est enregistré via ROS avec le message «joint_states»
  */
-void WMAdmitance::jointStateCallback(const sensor_msgs::JointState& pMsg)
+void WMAdmittance::jointStateCallback(const sensor_msgs::JointState& pMsg)
 {
     if (!aFirstCheck)
     {
         aFirstCheck = true;
-        for (const auto& lMapItem : aAdmitanceVelocityMap)
+        for (const auto& lMapItem : aAdmittanceVelocityMap)
         {
             bool lJointNamePresent = false;
             for (const auto& lJointName : pMsg.name)
@@ -209,8 +205,8 @@ void WMAdmitance::jointStateCallback(const sensor_msgs::JointState& pMsg)
 
             if (!lJointNamePresent)
             {
-                ROS_ERROR("WMAdmitance: Joint '%s' is not present in topic /joint_states.", lMapItem.first.c_str());
-                throw std::runtime_error("WMAdmitance: Joint '" + lMapItem.first + "' is not present in topic /joint_states.");
+                ROS_ERROR("WMAdmittance: Joint '%s' is not present in topic /joint_states.", lMapItem.first.c_str());
+                throw std::runtime_error("WMAdmittance: Joint '" + lMapItem.first + "' is not present in topic /joint_states.");
             }
         }
     }
@@ -222,14 +218,14 @@ void WMAdmitance::jointStateCallback(const sensor_msgs::JointState& pMsg)
 
 /**
  * \brief Mets à jour les vitesses d'admittance dans le conteneur.
- * \param[in] pAdmitanceVelocity La liste des vitesses
+ * \param[in] pAdmittanceVelocity La liste des vitesses
  */
-void WMAdmitance::updateAdmitanceVelocity(const std::vector<double>& pAdmitanceVelocity)
+void WMAdmittance::updateAdmittanceVelocity(const std::vector<double>& pAdmittanceVelocity)
 {
     size_t lIndex = 0;
     for (const auto& lJointName : aJointNames)
     {
-        aAdmitanceVelocityMap[lJointName] = pAdmitanceVelocity[lIndex];
+        aAdmittanceVelocityMap[lJointName] = pAdmittanceVelocity[lIndex];
         ++lIndex;
     }
 }
@@ -237,18 +233,18 @@ void WMAdmitance::updateAdmitanceVelocity(const std::vector<double>& pAdmitanceV
 /**
  * \brief Calcules les torques d'admittance avec les torques compensés
  * \param[in] pCompensatedTorque La liste des torques compensés
- * \return Retourne une liste des torques d'admitance
+ * \return Retourne une liste des torques d'admittance
  */
-std::vector<double> WMAdmitance::calculateAdmitanceTorque(const std::vector<double>& pCompensatedTorque)
+std::vector<double> WMAdmittance::calculateAdmittanceTorque(const std::vector<double>& pCompensatedTorque)
 {
     size_t lIndex = 0;
-    std::vector<double> lAdmitanceTorque;
+    std::vector<double> lAdmittanceTorque;
     for (const auto& lJointName : aJointNames)
     {
-        lAdmitanceTorque.emplace_back(getEffortFromJoint(lJointName) - pCompensatedTorque[lIndex]);
+        lAdmittanceTorque.emplace_back(getEffortFromJoint(lJointName) - pCompensatedTorque[lIndex]);
         ++lIndex;
     }
-    return lAdmitanceTorque;
+    return lAdmittanceTorque;
 }
 
 /**
@@ -256,7 +252,7 @@ std::vector<double> WMAdmitance::calculateAdmitanceTorque(const std::vector<doub
  * \param[in] pJointName Le nom du joint
  * \return Retourne l'effort du joint
  */
-double WMAdmitance::getEffortFromJoint(const std::string& pJointName) const
+double WMAdmittance::getEffortFromJoint(const std::string& pJointName) const
 {
     size_t lIndex = 0;
     double lEffort = 0.0f;

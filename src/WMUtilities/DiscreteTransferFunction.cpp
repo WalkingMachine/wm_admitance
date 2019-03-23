@@ -7,7 +7,7 @@
 
 #include <fstream>
 
-using namespace wm_admitance::utilities;
+using namespace wm_admittance::utilities;
 
 /**
  * \brief Constructeur par défaut qui utilise la reconfiguration dynamique

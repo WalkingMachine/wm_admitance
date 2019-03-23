@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>wm_admitance</name>
+  <name>wm_admittance</name>
   <version>1.0.0</version>
-  <description>Admitance algorithm</description>
+  <description>Admittance algorithm</description>
   <maintainer email="kevin.blackburn.1@ens.etsmtl.ca">Kevin Blackburn</maintainer>
 
 
@@ -15,7 +15,7 @@
   <!-- Url tags are optional, but mutiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <url type="website">https://github.com/WalkingMachine/wm_admitance</url> -->
+  <url type="website">https://github.com/WalkingMachine/wm_admittance</url> -->
 
 
   <author email="kevin.blackburn.1@ens.etsmtl.ca">Kevin Blackburn</author> -->
@@ -41,6 +41,6 @@
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- Other tools can request additional information be placed here -->
-    <hardware_interface plugin="${prefix}/wm_admitance_plugin.xml"/>
+    <hardware_interface plugin="${prefix}/wm_admittance_plugin.xml"/>
   </export>
 </package>

@@ -9,11 +9,11 @@ depends:
 - sensor_msgs
 - cmake_modules
 - tf
-description: Admitance algorithm
+description: Admittance algorithm
 license: BSD
 maintainers: Kevin Blackburn <kevin.blackburn.1@ens.etsmtl.ca>
 msgs: []
 package_type: package
 repo_url: ''
 srvs: []
-url: https://github.com/WalkingMachine/wm_admitance
+url: https://github.com/WalkingMachine/wm_admittance

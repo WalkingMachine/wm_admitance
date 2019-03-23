@@ -9,7 +9,7 @@
 #include <string>
 #include <urdf/model.h>
 
-namespace wm_admitance
+namespace wm_admittance
 {
     namespace utilities
     {

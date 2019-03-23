@@ -7,7 +7,7 @@
 #include "URDFHelper.h"
 #include "ControlTypes.h"
 
-using namespace wm_admitance::utilities;
+using namespace wm_admittance::utilities;
 
 class URDFParse_Unit_Test : public testing::Test
 {

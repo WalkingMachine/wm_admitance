@@ -13,7 +13,7 @@
 #include "../WMUtilities/URDFHelper.h"
 
 
-using namespace wm_admitance;
+using namespace wm_admittance;
 
 namespace
 {
@@ -53,7 +53,7 @@ WMGravityModel::WMGravityModel(const std::vector<std::string>& pTFNames, size_t 
  * \brief Fonction principale qui doit être appelée pour calculer les torques compensés
  * \return La lsite des torques compensés
  *
- * \note Cette fonction est normalement appelée par la classe WMAdmitance
+ * \note Cette fonction est normalement appelée par la classe WMAdmittance
  */
 CompensatedTorqueVector WMGravityModel::process()
 {

@@ -1,4 +1,4 @@
-sara_admitance:
+wm_admittance:
     joint_names:
         - right_shoulder_roll_joint
         - right_shoulder_pitch_joint

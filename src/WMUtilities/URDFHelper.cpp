@@ -6,7 +6,7 @@
 
 #include "URDFHelper.h"
 
-using namespace wm_admitance::utilities;
+using namespace wm_admittance::utilities;
 
 /**
  * \brief Récupère les données nécessaires avec un fichier URDF

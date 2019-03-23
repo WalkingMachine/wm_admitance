@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(wm_admitance)
+project(wm_admittance)
 SET(CMAKE_CXX_STANDARD 11)
 add_definitions(-std=c++11)
 
@@ -19,7 +19,7 @@ find_package(catkin REQUIRED COMPONENTS
  find_package(cmake_modules REQUIRED)
 
 generate_dynamic_reconfigure_options(
-        config/wm_admitance.cfg
+        config/wm_admittance.cfg
         config/FT_parameters.cfg
 )
 
@@ -36,7 +36,7 @@ catkin_package(
 ###########
 
 include_directories(
-  include/WMAdmitance
+  include/WMAdmittance
   include/WMUtilities
   ${catkin_INCLUDE_DIRS}
  # ${Eigen_INCLUDE_DIRS}
@@ -45,8 +45,8 @@ include_directories(
 
 
 add_library(${PROJECT_NAME}
-        src/WMAdmitance/WMAdmitance.cpp
-        src/WMAdmitance/WMGravityModel.cpp
+        src/WMAdmittance/WMAdmittance.cpp
+        src/WMAdmittance/WMGravityModel.cpp
         src/WMUtilities/DiscreteTransferFunction.cpp
         src/WMUtilities/URDFHelper.cpp
         )
@@ -65,7 +65,7 @@ install(TARGETS ${PROJECT_NAME}
         ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
         LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
 
-install(FILES wm_admitance_plugin.xml
+install(FILES wm_admittance_plugin.xml
         DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
 #==========================================================================

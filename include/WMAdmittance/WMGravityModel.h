@@ -13,7 +13,7 @@
 #include <tf/transform_listener.h>
 #include <urdf/model.h>
 
-namespace wm_admitance
+namespace wm_admittance
 {
     /**
      * \brief Type of vector of compensated torque
@@ -24,12 +24,8 @@ namespace wm_admitance
      * \brief Une classe qui obtient les torques compensés sur les joints
      *        avec le modèle de gravité
      *
-     * \details Cette classe calcules les vitesses requises sur chaque joint donné
-     *          via le fichier de configuration (sara_admitance.yaml). Les autres joints
-     *          sont tout de même pris en considération dans le calcul.
-     *
-     * \note En ce moment, cette classe supporte seulement l'admitance sur un seul bras.
-     *       Cette fonctionnalité devra être ajoutée si nécessaire.
+     * \details Cette calcules les torques compensés selon les noms des référentiels
+     *          passés en paramètre au constructeur.
      */
     class WMGravityModel final
     {
@@ -64,6 +60,6 @@ namespace wm_admitance
 
         utilities::RobotData aRobotData;
     };
-} // namespace wm_admitance
+} // namespace wm_admittance
 #endif // WM_GRAVITY_MODULE_H
 

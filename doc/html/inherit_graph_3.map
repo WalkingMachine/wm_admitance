@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classwm__admitance_1_1utilities_1_1ConfigManager.html" title="wm_admitance::utilities\l::ConfigManager\&lt; FTParameters\lConfig \&gt;" alt="" coords="5,5,219,61"/>
-<area shape="rect" id="node2" href="$classwm__admitance_1_1utilities_1_1DiscreteTransferFunction.html" title="Une classe qui effectue un calcul d&#39;asservissement avec une fonction de transert. ..." alt="" coords="267,13,444,54"/>
+<area shape="rect" id="node1" href="$classwm__admittance_1_1utilities_1_1ConfigManager.html" title="wm_admittance::utilities\l::ConfigManager\&lt; FTParametersConfig \&gt;" alt="" coords="5,5,268,47"/>
+<area shape="rect" id="node2" href="$classwm__admittance_1_1utilities_1_1DiscreteTransferFunction.html" title="Une classe qui effectue un calcul d&#39;asservissement avec une fonction de transert. ..." alt="" coords="316,5,493,47"/>
 </map>
