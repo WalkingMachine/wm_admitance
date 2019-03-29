@@ -9,17 +9,11 @@ wm_admittance:
     # These values define names of published transforms.
     # These values should be the same as
     # the ones in the joint_names array.
-    right_shoulder_roll_joint:
-        - right_clavicular_link
-
-    right_shoulder_pitch_joint:    
-        - right_upper_arm_upper_link
-
-    right_shoulder_yaw_joint:    
+    link_names:
+        - right_clavicular_link    
+        - right_upper_arm_upper_link   
         - right_upper_arm_lower_link
-
-    right_elbow_pitch_joint:    
-        - right_forearm_upper_link
-
-    right_elbow_yaw_joint:    
+        - right_forearm_upper_link 
         - right_wrist_upper_link
+        - right_wrist_pitch_joint
+        - right_wrist_roll_joint

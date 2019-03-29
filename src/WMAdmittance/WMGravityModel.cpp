@@ -60,7 +60,7 @@ CompensatedTorqueVector WMGravityModel::process()
     aJointTransform = retrievePositionFromTF();
     retrieveTransformInformation();
 
-    aAccelerationVector[0].setValue(0.0, 0.0, -9.81); // adding gravity
+    aAccelerationVector[0].setValue(0.0, 0.0, 9.81); // adding gravity
 
     aBackwardForce[aActuatorCount].setZero();
     aBackwardTorque[aActuatorCount].setZero();

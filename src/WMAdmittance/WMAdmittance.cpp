@@ -46,21 +46,16 @@ WMAdmittance::WMAdmittance() :
 {
     // Start the reconfigure server
     init();
-    
+
     // Retrieve joint names configuration
     aAdmittanceNode.getParam("wm_admittance/joint_names", aJointNames);
 
     // Retrieve link names for each joint
     std::vector<std::string> lLinkNames;
-    for (const std::string& lJointName : aJointNames)
-    {
-        std::vector<std::string> lLinkName;
-        aAdmittanceNode.getParam("wm_admittance/" + lJointName, lLinkName);
-        lLinkNames.emplace_back(std::move(lLinkName[0]));
-    }
+    aAdmittanceNode.getParam("wm_admittance/link_names", lLinkNames);
 
     // Create unique instance of gravity model
-    aGravityModel = std::make_unique<WMGravityModel>(lLinkNames, 7);
+    aGravityModel = std::make_unique<WMGravityModel>(lLinkNames, lLinkNames.size());
 
     // Create transfer function
     aDiscreteTF = std::make_unique<DiscreteTransferFunction>(
@@ -210,10 +205,8 @@ void WMAdmittance::jointStateCallback(const sensor_msgs::JointState& pMsg)
             }
         }
     }
-    else
-    {
-        aJointState = pMsg;
-    }
+
+    aJointState = pMsg;
 }
 
 /**
@@ -265,4 +258,6 @@ double WMAdmittance::getEffortFromJoint(const std::string& pJointName) const
         }
         ++lIndex;
     }
+
+    return lEffort;
 }
