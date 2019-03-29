@@ -118,7 +118,7 @@ double WMAdmittance::getAdmittanceVelocityFromJoint(const std::string& pJointNam
  */
 void WMAdmittance::process()
 {
-    if (!isAdmittanceEnabled())
+    if (isAdmittanceEnabled())
     {
         std::vector<double> lAdmittanceTorque =
             calculateAdmittanceTorque(aGravityModel->process());
