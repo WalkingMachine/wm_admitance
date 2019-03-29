@@ -87,7 +87,7 @@ WMAdmittance* WMAdmittance::getInstance()
             lInstance = new WMAdmittance();
             aInstance.store(lInstance, std::memory_order_release);
         }
-    }   
+    }
     return lInstance;
 }
 
@@ -115,7 +115,7 @@ double WMAdmittance::getAdmittanceVelocityFromJoint(const std::string& pJointNam
  */
 void WMAdmittance::process()
 {
-    if (isAdmittanceEnabled())
+    if (!isAdmittanceEnabled())
     {
         std::vector<double> lAdmittanceTorque =
             calculateAdmittanceTorque(aGravityModel->process());
@@ -127,8 +127,10 @@ void WMAdmittance::process()
         {
             for (const auto& lJointName : aJointNames)
             {
-                ROS_INFO("Velocity of %s: %lf", lJointName.c_str(), getAdmittanceVelocityFromJoint(lJointName));
+                ROS_INFO("Torque of %s: %lf", lJointName.c_str(), getEffortFromJoint(lJointName));
+                //ROS_INFO("Velocity of %s: %lf", lJointName.c_str(), getAdmittanceVelocityFromJoint(lJointName));
             }
+
         }
     }
 }
@@ -237,6 +239,12 @@ std::vector<double> WMAdmittance::calculateAdmittanceTorque(const std::vector<do
         lAdmittanceTorque.emplace_back(getEffortFromJoint(lJointName) - pCompensatedTorque[lIndex]);
         ++lIndex;
     }
+
+            for (const auto& lJointName : lAdmittanceTorque)
+            {
+                ROS_INFO("Delta torque of %lf", lJointName);
+                //ROS_INFO("Velocity of %s: %lf", lJointName.c_str(), getAdmittanceVelocityFromJoint(lJointName));
+            }
     return lAdmittanceTorque;
 }
 

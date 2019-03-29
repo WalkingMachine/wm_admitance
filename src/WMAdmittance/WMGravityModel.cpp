@@ -78,7 +78,7 @@ CompensatedTorqueVector WMGravityModel::process()
         aCompensatedTorque[i - 1] = aBackwardTorque[i -1].z();
     }
 
-    if (aVerboseMode)
+    if (!aVerboseMode)
     {
         size_t lIndex = 0;
         for (const auto& lTFName : aTFNames)
@@ -101,6 +101,7 @@ std::vector<tf::StampedTransform>  WMGravityModel::retrievePositionFromTF()
 {
     std::vector<tf::StampedTransform> lTransformList;
     std::string lLastFrame{gBaseTFName};
+
     for (const std::string& lTFName : aTFNames)
     {
         try
@@ -108,9 +109,9 @@ std::vector<tf::StampedTransform>  WMGravityModel::retrievePositionFromTF()
             tf::StampedTransform lTransform;
             ros::Time lNow = ros::Time::now();
 
-            if (aListener.waitForTransform(lLastFrame, lTFName, lNow, ros::Duration(0.01)))
+            if (aListener.waitForTransform(lLastFrame, lTFName, ros::Time(0), ros::Duration(0.01)))
             {
-                aListener.lookupTransform(lLastFrame, lTFName, lNow, lTransform);
+                aListener.lookupTransform(lLastFrame, lTFName, ros::Time(0), lTransform);
 
                 lTransformList.emplace_back(std::move(lTransform));
                 lLastFrame = lTFName;

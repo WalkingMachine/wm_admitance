@@ -15,5 +15,5 @@ wm_admittance:
         - right_upper_arm_lower_link
         - right_forearm_upper_link 
         - right_wrist_upper_link
-        - right_wrist_pitch_joint
-        - right_wrist_roll_joint
+        - right_wrist_pitch_link
+        - right_wrist_roll_link
