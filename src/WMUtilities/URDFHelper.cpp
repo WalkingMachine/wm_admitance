@@ -56,7 +56,7 @@ RobotData URDFHelper::retrieveDesiredData(const size_t pActuatorCount) {
     lRobotData.aCenterOfMass.resize(pActuatorCount);
 
     std::vector<std::string> lLinkName {"right_clavicular_link", "right_upper_arm_upper_link", "right_upper_arm_lower_link",
-                                        "right_forearm_upper_link", "right_wrist_upper_link", "right_wrist_lower_link", "right_socket_link"};
+                                        "right_forearm_upper_link", "right_forearm_lower_link", "right_wrist_lower_link", "right_socket_link"};
 
     size_t lActuatorCount{0};
     for (std::string & linkName : lLinkName)
