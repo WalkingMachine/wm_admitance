@@ -230,7 +230,7 @@ void WMAdmittance::updateAdmittanceVelocity(const std::vector<double>& pAdmittan
     size_t lIndex = 0;
     for (const auto& lJointName : aJointNames)
     {
-        aAdmittanceVelocityMap[lJointName] = pAdmittanceVelocity[lIndex] * 57.295779513;
+        aAdmittanceVelocityMap[lJointName] = pAdmittanceVelocity[lIndex] * -57.295779513;
         ++lIndex;
     }
 }
