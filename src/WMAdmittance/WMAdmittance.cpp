@@ -4,6 +4,7 @@
 // \author Olivier Lavoie
 
 #include "WMAdmittance.h"
+#include <geometry_msgs/Pose.h>
 
 #include <ros/ros.h>
 #include <ros/package.h>
@@ -69,6 +70,8 @@ WMAdmittance::WMAdmittance() :
 
     // Subscribe to the joint_state to obtain current efforts applied on joints
     aJointStateSub = aAdmittanceNode.subscribe("joint_states", 1, &WMAdmittance::jointStateCallback, this);
+
+    aDebugSub = aAdmittanceNode.advertise<geometry_msgs::Pose>("/debugVelocity", 1000);
 }
 
 /**
@@ -125,11 +128,19 @@ void WMAdmittance::process()
 
         if (aVerboseMode)
         {
+            geometry_msgs::Pose lMsg;
             for (const auto& lJointName : aJointNames)
             {
                 ROS_INFO("Torque of %s: %lf", lJointName.c_str(), getEffortFromJoint(lJointName));
                 //ROS_INFO("Velocity of %s: %lf", lJointName.c_str(), getAdmittanceVelocityFromJoint(lJointName));
             }
+
+            lMsg.position.x = getEffortFromJoint("right_shoulder_roll_joint");
+            lMsg.position.y = getEffortFromJoint("right_shoulder_pitch_joint");
+            lMsg.position.z = getEffortFromJoint("right_shoulder_yaw_joint");
+            lMsg.orientation.x = getEffortFromJoint("right_elbow_pitch_joint");
+            lMsg.orientation.y = getEffortFromJoint("right_elbow_yaw_joint");
+            aDebugSub.publish(lMsg);
 
         }
     }

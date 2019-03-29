@@ -81,6 +81,8 @@ namespace wm_admittance
         bool aVerboseMode{false};
         bool aFirstCheck{false};
 
+        ros::Publisher aDebugSub;
+
         std::unique_ptr<utilities::DiscreteTransferFunction> aDiscreteTF;
 
         sensor_msgs::JointState aJointState;
