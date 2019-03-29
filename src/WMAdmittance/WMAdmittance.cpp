@@ -127,8 +127,7 @@ void WMAdmittance::process()
         {
             for (const auto& lJointName : aJointNames)
             {
-                ROS_INFO("Torque of %s: %lf", lJointName.c_str(), getEffortFromJoint(lJointName));
-                //ROS_INFO("Velocity of %s: %lf", lJointName.c_str(), getAdmittanceVelocityFromJoint(lJointName));
+                ROS_INFO("Velocity of %s: %lf", lJointName.c_str(), getAdmittanceVelocityFromJoint(lJointName));
             }
 
         }
@@ -220,6 +219,7 @@ void WMAdmittance::updateAdmittanceVelocity(const std::vector<double>& pAdmittan
     size_t lIndex = 0;
     for (const auto& lJointName : aJointNames)
     {
+        std::cout << "Velocity TF : " << pAdmittanceVelocity[lIndex] << std::endl;
         aAdmittanceVelocityMap[lJointName] = pAdmittanceVelocity[lIndex];
         ++lIndex;
     }
