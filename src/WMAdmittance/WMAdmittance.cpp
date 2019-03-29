@@ -134,11 +134,11 @@ void WMAdmittance::process()
                 ROS_INFO("Velocity of %s: %lf", lJointName.c_str(), getAdmittanceVelocityFromJoint(lJointName));
             }
 
-            lMsg.position.x = getEffortFromJoint("right_shoulder_roll_joint");
-            lMsg.position.y = getEffortFromJoint("right_shoulder_pitch_joint");
-            lMsg.position.z = getEffortFromJoint("right_shoulder_yaw_joint");
-            lMsg.orientation.x = getEffortFromJoint("right_elbow_pitch_joint");
-            lMsg.orientation.y = getEffortFromJoint("right_elbow_yaw_joint");
+            lMsg.position.x = getAdmittanceVelocityFromJoint("right_shoulder_roll_joint");
+            lMsg.position.y = getAdmittanceVelocityFromJoint("right_shoulder_pitch_joint");
+            lMsg.position.z = getAdmittanceVelocityFromJoint("right_shoulder_yaw_joint");
+            lMsg.orientation.x = getAdmittanceVelocityFromJoint("right_elbow_pitch_joint");
+            lMsg.orientation.y = getAdmittanceVelocityFromJoint("right_elbow_yaw_joint");
             aDebugSub.publish(lMsg);
 
         }
