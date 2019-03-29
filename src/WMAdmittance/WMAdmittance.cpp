@@ -230,8 +230,7 @@ void WMAdmittance::updateAdmittanceVelocity(const std::vector<double>& pAdmittan
     size_t lIndex = 0;
     for (const auto& lJointName : aJointNames)
     {
-        std::cout << "Velocity TF : " << pAdmittanceVelocity[lIndex] << std::endl;
-        aAdmittanceVelocityMap[lJointName] = pAdmittanceVelocity[lIndex];
+        aAdmittanceVelocityMap[lJointName] = pAdmittanceVelocity[lIndex] * 57.295779513;
         ++lIndex;
     }
 }
@@ -256,12 +255,6 @@ std::vector<double> WMAdmittance::calculateAdmittanceTorque(const std::vector<do
         lAdmittanceTorque.emplace_back(lDeltaTorque);
         ++lIndex;
     }
-
-            for (const auto& lJointName : lAdmittanceTorque)
-            {
-                ROS_INFO("Delta torque of %lf", lJointName);
-                //ROS_INFO("Velocity of %s: %lf", lJointName.c_str(), getAdmittanceVelocityFromJoint(lJointName));
-            }
     return lAdmittanceTorque;
 }
 

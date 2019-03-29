@@ -69,7 +69,6 @@ CompensatedTorqueVector WMGravityModel::process()
     {
         aAccelerationVector[i + 1] = aRotationMatrix[i].transpose() * aAccelerationVector[i];
         aForce[i] = aRobotData.aLinkMass[i] * aAccelerationVector[i + 1];
-        std::cout << "Mass : " << aRobotData.aLinkMass[i] << std::endl;
     }
 
     for (size_t i{aActuatorCount}; i > 0; --i)
@@ -79,7 +78,7 @@ CompensatedTorqueVector WMGravityModel::process()
         aCompensatedTorque[i - 1] = aBackwardTorque[i -1].z();
     }
 
-    if (!aVerboseMode)
+    if (aVerboseMode)
     {
         size_t lIndex = 0;
         for (const auto& lTFName : aTFNames)
