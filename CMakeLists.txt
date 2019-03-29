@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
     urdf
     roscpp
     sensor_msgs
+    geometry_msgs
     tf
     dynamic_reconfigure
 )
@@ -23,13 +24,11 @@ generate_dynamic_reconfigure_options(
         config/FT_parameters.cfg
 )
 
-
 catkin_package(
     INCLUDE_DIRS include
     LIBRARIES ${PROJECT_NAME}
-    CATKIN_DEPENDS  roscpp sensor_msgs urdf tf
+    CATKIN_DEPENDS  roscpp sensor_msgs geometry_msgs urdf tf 
 )
-
 
 ###########
 ## Build ##
@@ -42,8 +41,6 @@ include_directories(
  # ${Eigen_INCLUDE_DIRS}
 )
 
-
-
 add_library(${PROJECT_NAME}
         src/WMAdmittance/WMAdmittance.cpp
         src/WMAdmittance/WMGravityModel.cpp
@@ -54,7 +51,6 @@ add_library(${PROJECT_NAME}
 add_dependencies(${PROJECT_NAME} ${catkin_EXPORTED_TARGETS})
 add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_gencfg)
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${Boost_LIBRARIES} yaml-cpp)
-
 
 # Install
 install(DIRECTORY include
