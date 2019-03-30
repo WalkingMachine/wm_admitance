@@ -4,32 +4,32 @@ nb_functionTransfer: 5
 
 # Ces paramètres peuvent être modifiés dynamiquement
 FunctionTransfer1:
-    numerator_1: 4.71475e-06
-    numerator_2: 9.42951438e-06
-    numerator_3: 4.71475719e-06
-    denominateur_2: -1.8849599
-    denominateur_3: 0.886845
+    numerator_1: 0.000396039
+    numerator_2: 0.000792078019
+    numerator_3: 0.000396039
+    denominateur_2: 0.01979898
+    denominateur_3: -0.9801950699999999
 FunctionTransfer2:
-    numerator_1: 4.71475e-06
-    numerator_2: 9.42951438e-06
-    numerator_3: 4.71475719e-06
-    denominateur_2: -1.8849599
-    denominateur_3: 0.886845
+    numerator_1: 0.000396039
+    numerator_2: 0.000792078019
+    numerator_3: 0.000396039
+    denominateur_2: 0.01979898
+    denominateur_3: -0.9801950699999999
 FunctionTransfer3:
-    numerator_1: 4.71475e-06
-    numerator_2: 9.42951438e-06
-    numerator_3: 4.71475719e-06
-    denominateur_2: -1.8849599
-    denominateur_3: 0.886845
+    numerator_1: 0.000396039
+    numerator_2: 0.000792078019
+    numerator_3: 0.000396039
+    denominateur_2: 0.01979898
+    denominateur_3: -0.9801950699999999
 FunctionTransfer4:
-    numerator_1: 4.71475e-06
-    numerator_2: 9.42951438e-06
-    numerator_3: 4.71475719e-06
-    denominateur_2: -1.8849599
-    denominateur_3: 0.886845
+    numerator_1: 0.000396039
+    numerator_2: 0.000792078019
+    numerator_3: 0.000396039
+    denominateur_2: 0.01979898
+    denominateur_3: -0.9801950699999999
 FunctionTransfer5:
-    numerator_1: 4.71475e-06
-    numerator_2: 9.42951438e-06
-    numerator_3: 4.71475719e-06
-    denominateur_2: -1.8849599
-    denominateur_3: 0.886845
+    numerator_1: 0.000396039
+    numerator_2: 0.000792078019
+    numerator_3: 0.000396039
+    denominateur_2: 0.01979898
+    denominateur_3: -0.9801950699999999

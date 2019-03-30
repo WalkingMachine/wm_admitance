@@ -247,7 +247,7 @@ std::vector<double> WMAdmittance::calculateAdmittanceTorque(const std::vector<do
     for (const auto& lJointName : aJointNames)
     {
         double lDeltaTorque = getEffortFromJoint(lJointName) - pCompensatedTorque[lIndex];
-        if (lDeltaTorque < 3.0f && lDeltaTorque > -3.0f)
+        if (lDeltaTorque < 5.0f && lDeltaTorque > -5.0f)
         {
             lDeltaTorque = 0.0f;
         }
