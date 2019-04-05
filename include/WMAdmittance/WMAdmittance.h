@@ -98,4 +98,3 @@ namespace wm_admittance
     };
 } // namespace wm_admittance
 #endif // WM_ADMITANCE_H
-

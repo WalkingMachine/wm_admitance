@@ -230,7 +230,14 @@ void WMAdmittance::updateAdmittanceVelocity(const std::vector<double>& pAdmittan
     size_t lIndex = 0;
     for (const auto& lJointName : aJointNames)
     {
-        aAdmittanceVelocityMap[lJointName] = pAdmittanceVelocity[lIndex] * -57.295779513;
+        if (pAdmittanceVelocity[lIndex] < 0.01 && pAdmittanceVelocity[lIndex] > -0.01)
+        {
+            aAdmittanceVelocityMap[lJointName] = 0.0;
+        }
+        else
+        {
+            aAdmittanceVelocityMap[lJointName] = pAdmittanceVelocity[lIndex] * -57.295779513;
+        }
         ++lIndex;
     }
 }
@@ -247,7 +254,7 @@ std::vector<double> WMAdmittance::calculateAdmittanceTorque(const std::vector<do
     for (const auto& lJointName : aJointNames)
     {
         double lDeltaTorque = getEffortFromJoint(lJointName) - pCompensatedTorque[lIndex];
-        if (lDeltaTorque < 5.0f && lDeltaTorque > -5.0f)
+        if (lDeltaTorque < 3.0f && lDeltaTorque > -3.0f)
         {
             lDeltaTorque = 0.0f;
         }
